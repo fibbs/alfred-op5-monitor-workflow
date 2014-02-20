@@ -27,4 +27,4 @@ Alfred App Workflow for op5 Monitor. More explanation will come soon.
 - `monc`
 - `mona`
 
-[caniuse]: ./screenshots/op5-workflow-001.png "Sample op5 Monitor query"
+[op5-workflow]: ./screenshots/op5-workflow-001.png "Sample op5 Monitor query"
