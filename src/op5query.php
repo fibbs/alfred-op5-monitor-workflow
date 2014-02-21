@@ -140,7 +140,11 @@ function fetch_op5_api ($filter, $columns) {
 function time_since ($duration) {
 
   if ($duration > 86400) {
-    $return = "over 1day";
+    $my_days = floor($duration / 86400);
+    $my_hours = floor(($duration % 86400) / 3600);
+    $my_minutes = floor(($duration - ($my_days * 86400) - ($my_hours * 3600)) / 60);
+    $my_seconds = $duration - ($my_days * 86400) - ($my_hours * 3600) - ($my_minutes * 60);
+    $return = "${my_days}d, ${my_hours}h, ${my_minutes}m, ${my_seconds}s";
   } else if ($duration > 3600) {
     $my_hours = floor($duration / 3600);
     $my_minutes = floor(($duration % 3600) / 60);
