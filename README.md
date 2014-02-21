@@ -131,12 +131,7 @@ I have created this workflow mainly for myself. But if it is as useful
 for you as it is for me, and you feel the need to drop me some cents or
 euros for it, I will not prevent you from doing so.
 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="32WRFW8GBHLWJ">
-<input type="image" src="https://www.paypalobjects.com/en_US/DE/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32WRFW8GBHLWJ)
 
 
 [op5-workflow-img001]: ./screenshots/op5-workflow-001.png "Sample op5 Monitor query"
