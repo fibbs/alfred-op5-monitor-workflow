@@ -413,7 +413,8 @@ $opmode = preg_replace('/\[(\w+)\].*$/', '${1}', $url_filter);
 $hoststatusmap = array(
   0 => 'UP',
   1 => 'DOWN',
-  2 => 'UNREACHABLE'
+  2 => 'UNREACHABLE',
+  3 => 'PENDING'
 );
 
 $servicestatusmap = array(
