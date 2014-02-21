@@ -21,12 +21,12 @@ op5 Monitor is planned to be released within the second quarter of 2014.
 3. Review the workflow to add custom Hotkeys
 
 ## Updating
-Run the [Alleyoop Workflow](http://www.alfredforum.com/topic/1582-alleyoop-update-alfred-workflows/) using the keyword `oop`. If you're not comfortable with Alleyoop, **star & watch this repo** to keep up to date on new versions and additional workflows.
+Unfortunately the [Alleyoop Workflow](http://www.alfredforum.com/topic/1582-alleyoop-update-alfred-workflows/) that offered a great package manager for Alfred workflows seems to be discontinued. This workflow still follows the requirements to work with Alleyoop, but it will probably move over to [Packal](http://www.packal.org) soon. You can find more information about Packal [here](http://www.alfredforum.com/topic/3730-new-workflow-and-theme-repository-packal/).
 
 ## About
 Alfred App Workflow for op5 Monitor.
 
-![alt text][op5-workflow]
+![alt text][op5-workflow-img001]
 
 ### Query module
 The query module contains the main functions of this workflow and can be
@@ -37,23 +37,20 @@ The query module can
 query op5 Monitor for several object types by prefixing the query with
 one of the following options:
 
-- *h:* for hosts,
-- *s:* for services,
-- *g:* for host groups,
-- *G:* for service groups and
-- *f:* or *+* for saved filters
+- `h:` for hosts,
+- `s:` for services,
+- `g:` for host groups,
+- `G:` for service groups and
+- `f:` or `+` for saved filters
 
-additionally, you can use
-
-- *'* to pass lsfilter filters (those that you can build in the
-  graphical filter builder in op5 Monitor's web UI, for example by copy
-and paste.
+![alt text][op5-workflow-img002]
+![alt text][op5-workflow-img003]
 
 If your query doesn't contain one of the above prefixes, the "default
 mode" is used. This default mode is configurable. If you didn't set it
 up, it will be "hosts".
 
-Therefore, just hitting <cmd>-<space> an "monq" will give you a list of
+Therefore, just hitting <cmd>-<space> and `monq` will give you a list of
 all your hosts in op5 Monitor with their corresponding states.
 
 You can add search queries to each of the above mentioned prefix. Text
@@ -65,7 +62,9 @@ regular expressions.
 This example will list hosts "server-001", "server-002", "server-003" if
 existing.
 
-Additionally, you can add a "!" before the search query to negate the
+![alt text][op5-workflow-img004]
+
+Additionally, you can add a `!` before the search query to negate the
 search:
 
 - `monq g:!web`
@@ -73,7 +72,9 @@ search:
 This example will show all host groups that do not contain the word
 "web" in their name or aliases.
 
-Last but not least, you can use the "#" suffix to any of the queries to
+![alt text][op5-workflow-img005]
+
+Last but not least, you can use the `#` suffix to any of the queries to
 ONLY list objects with PROBLEMS:
 
 - `monq G:#`
@@ -81,10 +82,14 @@ ONLY list objects with PROBLEMS:
 This example will list all service groups (not filtering by name) that
 contain any non-OK services.
 
+![alt text][op5-workflow-img006]
+
 #### Querying with lsfilters
-When using the *'* prefix to directly enter lsfilter filters, none of
+When using the `'` prefix to directly enter lsfilter filters, none of
 the above mentioned options can be used. But, in any case, you can
 always change the filter syntax directly in Alfred's prompt.
+
+![alt text][op5-workflow-img007]
 
 #### Object navigation using the tab key
 Most of the displayed objects (in fact, all except "services" as they
@@ -114,11 +119,31 @@ with the options to configure following necessary values:
 - password
 - default mode (default is "hosts")
 
-
+![alt text][op5-workflow-img008]
 
 ## Commands
 - `monq {query}`
 - `monc`
 - `mona`
 
-[op5-workflow]: ./screenshots/op5-workflow-001.png "Sample op5 Monitor query"
+## Donate
+I have created this workflow mainly for myself. But if it is as useful
+for you as it is for me, and you feel the need to drop me some cents or
+euros for it, I will not prevent you from doing so.
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="32WRFW8GBHLWJ">
+<input type="image" src="https://www.paypalobjects.com/en_US/DE/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
+[op5-workflow-img001]: ./screenshots/op5-workflow-001.png "Sample op5 Monitor query"
+[op5-workflow-img002]: ./screenshots/op5-workflow-002.png "Listing host group objects using prefix"
+[op5-workflow-img003]: ./screenshots/op5-workflow-003.png "Listing saved filters from op5 Monitor"
+[op5-workflow-img004]: ./screenshots/op5-workflow-004.png "Filtering using regular expression"
+[op5-workflow-img005]: ./screenshots/op5-workflow-005.png "Negating a filter"
+[op5-workflow-img006]: ./screenshots/op5-workflow-006.png "only show objects that have problems"
+[op5-workflow-img007]: ./screenshots/op5-workflow-007.png "Enter a filter directly"
+[op5-workflow-img008]: ./screenshots/op5-workflow-008.png "Configuration"
