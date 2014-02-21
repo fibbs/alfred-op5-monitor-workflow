@@ -57,9 +57,9 @@ You can add search queries to each of the above mentioned prefix. Text
 entered after the prefix is handled as search query. You can even use
 regular expressions.
 
-- `monq h:server-00[123]`
+- `monq h:host-00[123]`
 
-This example will list hosts "server-001", "server-002", "server-003" if
+This example will list hosts "host-001", "host-002", "host-003" if
 existing.
 
 ![alt text][op5-workflow-img004]
@@ -67,19 +67,19 @@ existing.
 Additionally, you can add a `!` before the search query to negate the
 search:
 
-- `monq g:!web`
+- `monq g:!host`
 
 This example will show all host groups that do not contain the word
-"web" in their name or aliases.
+"host" in their names and aliases.
 
 ![alt text][op5-workflow-img005]
 
 Last but not least, you can use the `#` suffix to any of the queries to
 ONLY list objects with PROBLEMS:
 
-- `monq G:#`
+- `monq g:#`
 
-This example will list all service groups (not filtering by name) that
+This example will list all host groups (not filtering by name) that
 contain any non-OK services.
 
 ![alt text][op5-workflow-img006]
