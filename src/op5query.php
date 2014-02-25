@@ -77,6 +77,7 @@ function url_columns ($opmode) {
       'description',
       'display_name',
       'state',
+      'state_text',
       'plugin_output',
       'host.name',
       'duration'
@@ -477,10 +478,10 @@ if ($opmode == "hosts") {
         $hosticon_servicestate = 1;
       } else if ($host->num_services_unknown >0) {
         $hosticon_servicestate = 3;
-      } else if ($host->num_services_ok >0) {
-        $hosticon_servicestate = 0;
-      } else {
+      } else if ($host->num_services_pending >0) {
         $hosticon_servicestate = 4;
+      } else {
+        $hosticon_servicestate = 0;
       }
 
       // ########################## here's the magic
@@ -540,13 +541,19 @@ if ($opmode == "hosts") {
         $service_description = $service->host->name . " / " . $service->description;
       }
 
+      if ($service->state_text == "pending") {
+        $service_icon = 'icons/servicestatus-4.png';
+      } else {
+        $service_icon = 'icons/servicestatus-'.$service->state.'.png';
+      }
+
       // ########################## here's the magic
       $w->result(
         '', 
         'service:' . $service->host->name . ';' . $service->description, 
         $service_description, 
         'since ' . time_since($service->duration) . ' - ' . $service->plugin_output, 
-        'icons/servicestatus-' . $service->state . '.png', 
+        $service_icon, 
         'yes', 
         '' 
       );
