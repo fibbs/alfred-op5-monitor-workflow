@@ -503,7 +503,7 @@ if ($opmode == "hosts") {
       '', 
       'No Hosts Found', 
       'No hosts matching your query were found', 
-      'icons/status-failure.png', 
+      'icon.png', 
       'no', 
       '' 
     );
