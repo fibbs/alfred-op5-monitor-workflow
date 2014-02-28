@@ -80,7 +80,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>op5 Monitor (v0.1.1)</string>
+	<string>op5 Monitor (v0.1.2)</string>
 	<key>objects</key>
 	<array>
 		<dict>
