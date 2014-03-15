@@ -186,26 +186,6 @@ function set_url_filter() {
   global $w;
   global $config_plist;
 
-  if (! $defaultmode = $w->get('defaultmode', $config_plist)) {
-    $defaultmode = 'hosts';
-  }
-
-  /*
-  if ( !preg_match('/^[a-zA-Z]:/', $inQuery) and !preg_match('/^[\'\+]/', $inQuery) ) {
-    if ($defaultmode == 'hosts') {
-      $inQuery = 'h:' . $inQuery;
-    } else if ($defaultmode == 'services') {
-      $inQuery = 's:' . $inQuery;
-    } else if ($defaultmode == 'hostgroups') {
-      $inQuery = 'g:' . $inQuery;
-    } else if ($defaultmode == 'servicegroups') {
-      $inQuery = 'G:' . $inQuery;
-    } else if ($defaultmode == 'saved_filters') {
-      $inQuery = 'f:' . $inQuery;
-    }
-  }
-   */
-
   if ( is_string($substr = check_args_prefix('s:', $inQuery)) ) {
 
     list($is_filtered, $substr) = check_filter_problems_only($substr);
@@ -408,9 +388,7 @@ function set_url_filter() {
 
 // MAIN workflow
 
-if ($inQuery) {
-  $url_filter = set_url_filter();
-} else {
+if (empty($inQuery)) {
 
   $w->result(
     '',
@@ -455,9 +433,14 @@ if ($inQuery) {
     'Query op5 Monitor for saved filters',
     'icon.png',
     'no',
-    'f:'
+    '+'
   );
   echo $w->toxml();
+  exit;
+
+} else {
+
+  $url_filter = set_url_filter();
 
 }
 
