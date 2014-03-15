@@ -17,17 +17,6 @@
 				<string></string>
 			</dict>
 		</array>
-		<key>4584E76A-E0AB-49EF-B5D6-E392E167D258</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>7BDBD572-E8F4-4D82-B1E2-CF80A0899EE3</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
 		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
 		<array>
 			<dict>
@@ -80,7 +69,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>op5 Monitor (v0.1.2)</string>
+	<string>op5 Monitor (v0.2.0)</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -91,7 +80,7 @@
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>keyword</key>
-				<string>monq</string>
+				<string>mon</string>
 				<key>runningsubtext</key>
 				<string>loading…</string>
 				<key>script</key>
@@ -186,60 +175,6 @@ end tell</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<false/>
-				<key>output</key>
-				<integer>0</integer>
-				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>op5 Monitor Action</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>7BDBD572-E8F4-4D82-B1E2-CF80A0899EE3</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>escaping</key>
-				<integer>4</integer>
-				<key>keyword</key>
-				<string>mona</string>
-				<key>runningsubtext</key>
-				<string>loading…</string>
-				<key>script</key>
-				<string>php -f op5actions.php "{query}"</string>
-				<key>subtext</key>
-				<string>issue some actions on previously selected op5 Monitor object</string>
-				<key>title</key>
-				<string>op5 Monitor Object Actions</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>4584E76A-E0AB-49EF-B5D6-E392E167D258</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>script</key>
@@ -262,7 +197,7 @@ end tell</string>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>keyword</key>
-				<string>monc</string>
+				<string>monconf</string>
 				<key>runningsubtext</key>
 				<string>loading…</string>
 				<key>script</key>
@@ -322,16 +257,6 @@ end tell</string>
 		<dict>
 			<key>ypos</key>
 			<real>450</real>
-		</dict>
-		<key>4584E76A-E0AB-49EF-B5D6-E392E167D258</key>
-		<dict>
-			<key>ypos</key>
-			<real>280</real>
-		</dict>
-		<key>7BDBD572-E8F4-4D82-B1E2-CF80A0899EE3</key>
-		<dict>
-			<key>ypos</key>
-			<real>280</real>
 		</dict>
 		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
 		<dict>
