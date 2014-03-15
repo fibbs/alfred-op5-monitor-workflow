@@ -1,4 +1,4 @@
-op5 Monitor ([Download v0.2.0](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
+op5 Monitor ([Download v0.2.1](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
 ==============================
 
 Alfred 2 workflow for the commercial Nagios-based network monitoring
@@ -50,7 +50,7 @@ You can add search queries to each of the above mentioned query prefixes. Text
 entered after the prefix is handled as search query. You can even use
 regular expressions.
 
-- `monq h:host-00[123]`
+- `mon h:host-00[123]`
 
 This example will list hosts "host-001", "host-002", "host-003" if
 existing.
@@ -60,7 +60,7 @@ existing.
 Additionally, you can add a `!` before the search query to negate the
 search query:
 
-- `monq g:!host`
+- `mon g:!host`
 
 This example will show all host groups that do not contain the word
 "host" in their names and aliases.
@@ -70,7 +70,7 @@ This example will show all host groups that do not contain the word
 Last but not least, you can use the `#` suffix to any of the queries to
 ONLY list objects with PROBLEMS:
 
-- `monq g:#`
+- `mon g:#`
 
 This example will list all host groups (not filtering by name) that
 contain any non-OK services.
@@ -96,7 +96,7 @@ Tab-completion works as follows:
 This feature is not yet implemented!
 
 ## Configuration module
-By calling the workflow with the `monc` command you will be presented
+By calling the workflow with the `monconf` command you will be presented
 with the options to configure following necessary values:
 
 - hostname (op5 Monitor FQDN or IP address)
@@ -106,9 +106,9 @@ with the options to configure following necessary values:
 ![alt text][op5-workflow-img009]
 
 ## Commands
-- `monq {query}`
-- `monc`
-- `mona`
+- `mon {query}`
+- `monconf`
+- `monaction`
 
 ## Donate
 I have created this workflow mainly for myself. But if it is as useful
