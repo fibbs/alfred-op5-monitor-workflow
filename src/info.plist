@@ -28,6 +28,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>39D6B135-75E4-49F4-B774-E212A55FB36E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</key>
 		<array>
 			<dict>
@@ -108,7 +119,7 @@
 				<integer>4</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2"
-   search "mona {query}"
+   search "op5actions {query}"
 end tell</string>
 				<key>type</key>
 				<integer>6</integer>
@@ -169,6 +180,58 @@ end tell</string>
 			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
 			<string>ADF2E946-4EE7-43E0-9661-429910E6A97C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>keyword</key>
+				<string>op5actions</string>
+				<key>script</key>
+				<string>php -f op5actions.php "{query}"</string>
+				<key>subtext</key>
+				<string>Issue object specific actions on op5 Monitor object</string>
+				<key>title</key>
+				<string>op5 Monitor object actions</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>op5 Monitor Object Action</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>39D6B135-75E4-49F4-B774-E212A55FB36E</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -258,10 +321,20 @@ end tell</string>
 			<key>ypos</key>
 			<real>450</real>
 		</dict>
+		<key>39D6B135-75E4-49F4-B774-E212A55FB36E</key>
+		<dict>
+			<key>ypos</key>
+			<real>250</real>
+		</dict>
 		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
 		<dict>
 			<key>ypos</key>
 			<real>130</real>
+		</dict>
+		<key>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</key>
+		<dict>
+			<key>ypos</key>
+			<real>250</real>
 		</dict>
 		<key>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</key>
 		<dict>
