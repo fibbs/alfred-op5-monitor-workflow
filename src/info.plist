@@ -65,11 +65,11 @@
 	<key>createdby</key>
 	<string>Christian Anton &lt;canton@op5.com&gt;</string>
 	<key>description</key>
-	<string>Request states of your IT components and services from op5 Monitor</string>
+	<string>Request states of your IT components and services from op5 Monitor (v0.2.1)</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>op5 Monitor (v0.2.0)</string>
+	<string>op5 Monitor</string>
 	<key>objects</key>
 	<array>
 		<dict>
