@@ -190,6 +190,7 @@ function set_url_filter() {
     $defaultmode = 'hosts';
   }
 
+  /*
   if ( !preg_match('/^[a-zA-Z]:/', $inQuery) and !preg_match('/^[\'\+]/', $inQuery) ) {
     if ($defaultmode == 'hosts') {
       $inQuery = 'h:' . $inQuery;
@@ -203,6 +204,7 @@ function set_url_filter() {
       $inQuery = 'f:' . $inQuery;
     }
   }
+   */
 
   if ( is_string($substr = check_args_prefix('s:', $inQuery)) ) {
 
@@ -405,7 +407,59 @@ function set_url_filter() {
 }
 
 // MAIN workflow
-$url_filter = set_url_filter();
+
+if ($inQuery) {
+  $url_filter = set_url_filter();
+} else {
+
+  $w->result(
+    '',
+    '',
+    'Hosts Query',
+    'Query op5 Monitor for host objects',
+    'icon.png',
+    'no',
+    'h:'
+  );
+  $w->result(
+    '',
+    '',
+    'Hostgroups Query',
+    'Query op5 Monitor for hostgroup objects',
+    'icon.png',
+    'no',
+    'g:'
+  );
+  $w->result(
+    '',
+    '',
+    'Services Query',
+    'Query op5 Monitor for service objects',
+    'icon.png',
+    'no',
+    's:'
+  );
+  $w->result(
+    '',
+    '',
+    'Servicegroups Query',
+    'Query op5 Monitor for Servicegroup objects',
+    'icon.png',
+    'no',
+    'G:'
+  );
+  $w->result(
+    '',
+    '',
+    'Saved Filters Query',
+    'Query op5 Monitor for saved filters',
+    'icon.png',
+    'no',
+    'f:'
+  );
+  echo $w->toxml();
+
+}
 
 // find out which opmode to use (defined in the filter between the square brackets)
 $opmode = preg_replace('/\[(\w+)\].*$/', '${1}', $url_filter);
