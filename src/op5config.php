@@ -62,60 +62,6 @@ if ($opmode == "sethostname") {
 
   echo $w->toxml();
 
-} else if ($opmode == "setdefaultmode") {
-
-  $w->result(
-    '', 
-    $opmode . ' hosts', 
-    'hosts', 
-    'hit enter to set default mode to hosts', 
-    'icon.png', 
-    'yes', 
-    '' 
-  );
-
-  $w->result(
-    '', 
-    $opmode . ' services', 
-    'services', 
-    'hit enter to set default mode to services', 
-    'icon.png', 
-    'yes', 
-    '' 
-  );
-
-  $w->result(
-    '', 
-    $opmode . ' hostgroups', 
-    'hostgroups', 
-    'hit enter to set default mode to hostgroups', 
-    'icon.png', 
-    'yes', 
-    '' 
-  );
-
-  $w->result(
-    '', 
-    $opmode . ' servicegroups', 
-    'servicegroups', 
-    'hit enter to set default mode to servicegroups', 
-    'icon.png', 
-    'yes', 
-    '' 
-  );
-
-  $w->result(
-    '', 
-    $opmode . ' saved_filters', 
-    'saved_filters', 
-    'hit enter to set default mode to saved_filters', 
-    'icon.png', 
-    'yes', 
-    '' 
-  );
-
-  echo $w->toxml();
-
 } else if (empty($opmode)) {
 
   // try to read the settings.plist
@@ -171,16 +117,6 @@ if ($opmode == "sethostname") {
     'icon.png',
     'no',
     'setpassword '
-  );
-
-  $w->result(
-    '',
-    '',
-    'Set Default Mode',
-    $defaultmode_text,
-    'icon.png',
-    'no',
-    'setdefaultmode '
   );
 
   echo $w->toxml();
