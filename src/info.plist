@@ -6,6 +6,8 @@
 	<string>canton.alfred-op5-helper</string>
 	<key>connections</key>
 	<dict>
+		<key>0D64AC76-3D3B-466B-9F59-96ED7E6B9F17</key>
+		<array/>
 		<key>155644DB-979F-4481-912A-704E823D142B</key>
 		<array>
 			<dict>
@@ -32,7 +34,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>39D6B135-75E4-49F4-B774-E212A55FB36E</string>
+				<string>D3B825BD-92D7-4582-9837-83914151B760</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -65,11 +67,19 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>FFAA5375-0853-40EA-A561-2CD4F0D2389C</string>
+				<string>0D64AC76-3D3B-466B-9F59-96ED7E6B9F17</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>FFAA5375-0853-40EA-A561-2CD4F0D2389C</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Issue extra actions for this object</string>
 			</dict>
 		</array>
 	</dict>
@@ -83,6 +93,50 @@
 	<string>op5 Monitor</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>script</key>
+				<string>MYURL=`php -f op5buildobjecturl.php "{query}"`
+#echo $MYURL
+open $MYURL</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>0D64AC76-3D3B-466B-9F59-96ED7E6B9F17</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>46</integer>
+				<key>hotmod</key>
+				<integer>1179648</integer>
+				<key>hotstring</key>
+				<string>M</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -137,31 +191,6 @@ end tell</string>
 				<key>action</key>
 				<integer>0</integer>
 				<key>argument</key>
-				<integer>0</integer>
-				<key>hotkey</key>
-				<integer>46</integer>
-				<key>hotmod</key>
-				<integer>1179648</integer>
-				<key>hotstring</key>
-				<string>M</string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
 				<integer>3</integer>
 				<key>argumenttext</key>
 				<string>m:zahnarztpraxis-gall</string>
@@ -186,6 +215,23 @@ end tell</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>D3B825BD-92D7-4582-9837-83914151B760</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
@@ -201,54 +247,12 @@ end tell</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<false/>
-				<key>output</key>
-				<integer>0</integer>
-				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>op5 Monitor Object Action</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
-			<key>uid</key>
-			<string>39D6B135-75E4-49F4-B774-E212A55FB36E</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>4</integer>
-				<key>script</key>
-				<string>php -f plist_set.php {query}</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -306,11 +310,48 @@ end tell</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>script</key>
+				<string>php -f plist_set.php {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>FC6B2431-4787-43AA-A054-8440C95D753B</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
 	<key>uidata</key>
 	<dict>
+		<key>0D64AC76-3D3B-466B-9F59-96ED7E6B9F17</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
 		<key>155644DB-979F-4481-912A-704E823D142B</key>
 		<dict>
 			<key>ypos</key>
@@ -321,17 +362,17 @@ end tell</string>
 			<key>ypos</key>
 			<real>450</real>
 		</dict>
-		<key>39D6B135-75E4-49F4-B774-E212A55FB36E</key>
-		<dict>
-			<key>ypos</key>
-			<real>250</real>
-		</dict>
 		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
 		<dict>
 			<key>ypos</key>
 			<real>130</real>
 		</dict>
 		<key>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</key>
+		<dict>
+			<key>ypos</key>
+			<real>250</real>
+		</dict>
+		<key>D3B825BD-92D7-4582-9837-83914151B760</key>
 		<dict>
 			<key>ypos</key>
 			<real>250</real>
@@ -351,10 +392,15 @@ end tell</string>
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
+		<key>FC6B2431-4787-43AA-A054-8440C95D753B</key>
+		<dict>
+			<key>ypos</key>
+			<real>570</real>
+		</dict>
 		<key>FFAA5375-0853-40EA-A561-2CD4F0D2389C</key>
 		<dict>
 			<key>ypos</key>
-			<real>10</real>
+			<real>130</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>

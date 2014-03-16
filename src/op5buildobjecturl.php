@@ -38,37 +38,24 @@ require_once('inc_functions.php');
 // now check the prefix string and act accordingly
 if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
-  // work for host: prefix
-
-  $w->result(
-    '',
-    build_host_action_url($substr),
-    'Host object: ' . $substr,
-    'Hit <enter> to get directly to this object in op5 Monitor',
-    'icon.png',
-    'yes',
-    ''
-  );
-  echo $w->toxml();
+  $url = build_object_url("host", $substr);
 
 } else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
+
+  $url = build_object_url("hostgroup", $substr);
+
 } else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
+
+  $url = build_object_url("service", $substr);
+
 } else if ( is_string($substr = check_args_prefix('servicegroup:', $inQuery)) ) {
+
+  $url = build_object_url("servicegroup", $substr);
+
 } else {
-
-  $w->result(
-    '',
-    '',
-    'Error! No arguments given',
-    'this workflow is intented to be used by the op5 Monitor query module only',
-    'icon.png',
-    'no',
-    ''
-  );
-  echo $w->toxml();
-  exit;
-
+  $url = "https://" . $api_hostname . "/monitor/index.php/tac";
 }
 
+echo $url . "\n";
 
 ?>
