@@ -86,7 +86,7 @@
 	<key>createdby</key>
 	<string>Christian Anton &lt;canton@op5.com&gt;</string>
 	<key>description</key>
-	<string>Request states of your IT components and services from op5 Monitor (v0.2.1)</string>
+	<string>Request states of your IT components and services from op5 Monitor (v0.2.2)</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
