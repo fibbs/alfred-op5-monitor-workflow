@@ -32,7 +32,8 @@ function url_columns ($opmode) {
       'num_services_crit',
       'num_services_unknown',
       'num_services_pending',
-      'duration'
+      'duration',
+      'acknowledged',
     );
   } else if ($opmode == "saved_filters") {
     $columns = array(

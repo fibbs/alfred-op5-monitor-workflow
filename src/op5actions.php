@@ -46,12 +46,25 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
   $w->result(
     '',
     '',
-    'Host: ' . $substr . ' / ' . $host_object->plugin_output,
+    'Host: ' . $substr,
     'choose from one of the below listed options to issue object related actions',
     determine_hosticon($host_object),
     'no',
     ''
   );
+
+  if ($host_object->state != 0 and $host_object->acknowledged == 0) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge host problem',
+      '',
+      'icon.png',
+      'no',
+      ''
+    );
+  }
+
   echo $w->toxml();
 
 } else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
