@@ -25,6 +25,11 @@ $inQuery = implode(' ', $argv);
 $username = $w->get('username', $config_plist);
 $password = $w->get('password', $config_plist);
 $api_hostname = $w->get('hostname', $config_plist);
+if (is_string( $get_authentication_val = $w->get('get_authentication', $config_plist)) and $get_authentication_val == "on") {
+  $get_authentication = true;
+} else {
+  $get_authentication = false;
+}
 
 /*
 if (empty($username) or empty($password) or empty($api_hostname)) {
@@ -34,28 +39,6 @@ if (empty($username) or empty($password) or empty($api_hostname)) {
 
 require_once('inc_functions.php');
 
-
-// now check the prefix string and act accordingly
-if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
-
-  $url = build_object_url("host", $substr);
-
-} else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
-
-  $url = build_object_url("hostgroup", $substr);
-
-} else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
-
-  $url = build_object_url("service", $substr);
-
-} else if ( is_string($substr = check_args_prefix('servicegroup:', $inQuery)) ) {
-
-  $url = build_object_url("servicegroup", $substr);
-
-} else {
-  $url = "https://" . $api_hostname . "/monitor/index.php/tac";
-}
-
-echo $url . "\n";
+echo build_object_url($inQuery) . "\n";
 
 ?>

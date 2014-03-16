@@ -26,6 +26,12 @@ $inQuery = implode(' ', $argv);
 $username = $w->get('username', $config_plist);
 $password = $w->get('password', $config_plist);
 $api_hostname = $w->get('hostname', $config_plist);
+if (is_string( $get_authentication_val = $w->get('get_authentication', $config_plist)) and $get_authentication_val == "on") {
+  $get_authentication = true;
+} else {
+  $get_authentication = false;
+}
+
 
 if (empty($username) or empty($password) or empty($api_hostname)) {
   error_http_connect();

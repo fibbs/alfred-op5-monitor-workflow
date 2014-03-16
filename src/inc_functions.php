@@ -355,35 +355,57 @@ function set_url_filter() {
 
 }
 
-function build_object_url($type, $objectname) {
+function build_object_url($query) {
   global $api_hostname;
   global $username;
   global $password;
+  global $get_authentication;
 
-  if ($type == "host") {
+  if ( is_string($objectname = check_args_prefix('host:', $query)) ) {
 
     $filter = "[services] host.name=\"$objectname\"";
     $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
 
-  } else if ($type == "hostgroup") {
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
+  } else if ( is_string($objectname = check_args_prefix('hostgroup:', $query)) ) {
 
     $filter = "[hosts] groups >= \"$objectname\"";
     $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
 
-  } else if ($type == "service") {
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
+  } else if ( is_string($objectname = check_args_prefix('service:', $query)) ) {
 
     list( $hostname, $servicename) = explode(";", $objectname);
     $url = 'https://'.$api_hostname.'/monitor/index.php/extinfo/details?host=' . urlencode($hostname) . '&service=' . urlencode($servicename);
 
-  } else if ($type == "servicegroup") {
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
+  } else if ( is_string($objectname = check_args_prefix('servicegroup:', $query)) ) {
 
     $filter = "[services] groups >= \"$objectname\"";
     $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
 
-  }
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
 
-  // TODO only if "GET authentication" is enabled (should be config setting)
-  $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+  } else {
+
+    $url = 'https://'.$api_hostname.'/monitor/index.php/tac/index';
+
+    if ($get_authentication) {
+      $url = $url . "?username=".urlencode($username)."&password=".urlencode($password);
+    }
+
+  }
 
   return $url;
 }
