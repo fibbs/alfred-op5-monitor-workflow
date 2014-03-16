@@ -39,21 +39,59 @@ require_once('inc_functions.php');
 if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   // work for host: prefix
-
   $w->result(
     '',
-    build_host_action_url($substr),
+    '',
     'Host object: ' . $substr,
-    'Hit <enter> to get directly to this object in op5 Monitor',
+    'choose from one of the below listed options to issue object related actions',
     'icon.png',
-    'yes',
+    'no',
     ''
   );
   echo $w->toxml();
 
 } else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
+
+  // work for hostgroup: prefix
+  $w->result(
+    '',
+    '',
+    'Hostgroup object: ' . $substr,
+    'choose from one of the below listed options to issue object related actions',
+    'icon.png',
+    'no',
+    ''
+  );
+  echo $w->toxml();
+
 } else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
+
+  // work for service: prefix
+  $w->result(
+    '',
+    '',
+    'Service object: ' . $substr,
+    'choose from one of the below listed options to issue object related actions',
+    'icon.png',
+    'no',
+    ''
+  );
+  echo $w->toxml();
+
 } else if ( is_string($substr = check_args_prefix('servicegroup:', $inQuery)) ) {
+
+  // work for host: servicegroup
+  $w->result(
+    '',
+    '',
+    'Servicegroup object: ' . $substr,
+    'choose from one of the below listed options to issue object related actions',
+    'icon.png',
+    'no',
+    ''
+  );
+  echo $w->toxml();
+
 } else {
 
   $w->result(
