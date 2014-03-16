@@ -90,6 +90,7 @@ function fetch_op5_api ($filter, $columns) {
   global $api_hostname;
   global $username;
   global $password;
+  global $w;
 
   $url = 'https://'.$api_hostname.'/api/filter/query?query=' . urlencode($filter) . "&columns=" . $columns;
 
@@ -104,6 +105,21 @@ function fetch_op5_api ($filter, $columns) {
   curl_close($ch);
 
   $output = json_decode($output_json);
+
+  if ($output->error) {
+    $w->result(
+      '',
+      'api_error',
+      $output->error,
+      $output->full_error,
+      'icon.png',
+      'no',
+      ''
+    );
+    echo $w->toxml();
+    exit;
+  }
+
   return $output;
 }
 
@@ -408,5 +424,59 @@ function build_object_url($query) {
   }
 
   return $url;
+}
+
+function determine_hosticon($host_object) {
+  if ($host_object->last_check == 0) {
+   $hosticon_hoststate = 3;
+  } else {
+    $hosticon_hoststate = $host_object->state;
+  }
+
+  if ($host_object->num_services_crit >0) {
+    $hosticon_servicestate = 2;
+  } else if ($host_object->num_services_warn >0) {
+    $hosticon_servicestate = 1;
+  } else if ($host_object->num_services_unknown >0) {
+    $hosticon_servicestate = 3;
+  } else if ($host_object->num_services_pending >0) {
+    $hosticon_servicestate = 4;
+  } else {
+    $hosticon_servicestate = 0;
+  }  
+
+  return 'icons/hoststatus-'.$hosticon_hoststate.'-'.$hosticon_servicestate.'.png';
+}
+
+function determine_serviceicon($service_object) {
+  if ($service_object->state_text == "pending") {
+    return 'icons/servicestatus-4.png';
+  } else {
+    return 'icons/servicestatus-'.$service_object->state.'.png';
+  }
+}
+
+function determine_hostgroupicon($hostgroup_object) {
+  if ($hostgroup_object->num_hosts > 0) {
+    $icon_hostpart = $hostgroup_object->worst_host_state;
+  } else {
+    $icon_hostpart = 3;
+  }
+
+  if ($hostgroup_object->num_services >0) {
+    $icon_servicepart = $hostgroup_object->worst_service_state;
+  } else {
+    $icon_servicepart = 4;
+  }
+
+  return 'icons/hoststatus-'.$icon_hostpart.'-'.$icon_servicepart.'.png';
+}
+
+function determine_servicegroupicon($servicegroup_object) {
+  if ($servicegroup_object->num_services >0) {
+    return 'icons/servicestatus-' . $servicegroup_object->worst_service_state . '.png';
+  } else {
+    return 'icons/servicestatus-4.png';
+  }
 }
 ?>
