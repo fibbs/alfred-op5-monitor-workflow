@@ -90,6 +90,7 @@ function fetch_op5_api ($filter, $columns) {
   global $api_hostname;
   global $username;
   global $password;
+  global $w;
 
   $url = 'https://'.$api_hostname.'/api/filter/query?query=' . urlencode($filter) . "&columns=" . $columns;
 
@@ -104,6 +105,21 @@ function fetch_op5_api ($filter, $columns) {
   curl_close($ch);
 
   $output = json_decode($output_json);
+
+  if ($output->error) {
+    $w->result(
+      '',
+      'api_error',
+      'WHACK! ' . $output->error,
+      $output->full_error,
+      'icon.png',
+      'no',
+      ''
+    );
+    echo $w->toxml();
+    exit;
+  }
+
   return $output;
 }
 
