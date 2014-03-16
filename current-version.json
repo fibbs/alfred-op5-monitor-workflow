@@ -1,5 +1,5 @@
 {
-  "version": 0.2.1,
+  "version": 0.2.2,
   "download_url": "https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow",
   "description": "Request status data of op5 Monitor"
 }

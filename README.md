@@ -1,4 +1,4 @@
-op5 Monitor ([Download v0.2.1](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
+op5 Monitor ([Download v0.2.2](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
 ==============================
 
 Alfred 2 workflow for the commercial Nagios-based network monitoring
@@ -97,13 +97,19 @@ This feature is not yet implemented!
 
 ## Configuration module
 By calling the workflow with the `monconf` command you will be presented
-with the options to configure following necessary values:
+with the options to configure the following necessary values:
 
 - hostname (op5 Monitor FQDN or IP address)
 - username for op5 Monitor login
 - password
+- op5 Monitor "HTTP GET authentication"
 
 ![alt text][op5-workflow-img009]
+
+### HTTP GET authentication
+op5 Monitor supports HTTP GET authentication so you can authenticate to your op5 Monitor Web UI without being presented a login prompt, just by submitting the username and password within the URL using GET parameters. Note: Authenticating using GET parameters can be a security risk, since the username and password will be part of the URL and therefore can be exposed in various places such as the address bar of the web browser, web server log files and saved bookmarks.
+
+More information on this feature and an explanation on how to enable it in your op5 Monitor installation can be found ([here](https://kb.op5.com/display/HOWTOs/Fetching+CSV+reports+over+HTTP)) in the op5 Knowledge Base.
 
 ## Commands
 - `mon {query}`
