@@ -110,7 +110,7 @@ function fetch_op5_api ($filter, $columns) {
     $w->result(
       '',
       'api_error',
-      'WHACK! ' . $output->error,
+      $output->error,
       $output->full_error,
       'icon.png',
       'no',

@@ -26,25 +26,29 @@ $username = $w->get('username', $config_plist);
 $password = $w->get('password', $config_plist);
 $api_hostname = $w->get('hostname', $config_plist);
 
+require_once('inc_functions.php');
+
 /*
 if (empty($username) or empty($password) or empty($api_hostname)) {
   error_http_connect();
 }
  */
 
-require_once('inc_functions.php');
-
 
 // now check the prefix string and act accordingly
 if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   // work for host: prefix
+  $filter = '[hosts] name = "' . $substr . '"';
+  $fetch_result = fetch_op5_api($filter, url_columns('hosts'));
+  $host_object = $fetch_result[0];
+
   $w->result(
     '',
     '',
-    'Host object: ' . $substr,
+    'Host: ' . $substr . ' / ' . $host_object->plugin_output,
     'choose from one of the below listed options to issue object related actions',
-    'icon.png',
+    determine_hosticon($host_object),
     'no',
     ''
   );
@@ -53,12 +57,16 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 } else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
 
   // work for hostgroup: prefix
+  $filter = '[hostgroups] name = "' . $substr . '"';
+  $fetch_result = fetch_op5_api($filter, url_columns('hostgroups'));
+  $hostgroup_object = $fetch_result[0];
+
   $w->result(
     '',
     '',
-    'Hostgroup object: ' . $substr,
+    'Hostgroup: ' . $substr,
     'choose from one of the below listed options to issue object related actions',
-    'icon.png',
+    determine_hostgroupicon($hostgroup_object),
     'no',
     ''
   );
@@ -67,12 +75,17 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 } else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
 
   // work for service: prefix
+  list($myhost, $myservice) = explode(';', $substr);
+  $filter = '[services] host.name = "' . $myhost . '" and description = "' . $myservice . '"';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+  $service_object = $fetch_result[0];
+
   $w->result(
     '',
     '',
-    'Service object: ' . $substr,
+    'Service: ' . $myservice . " on " . $myhost,
     'choose from one of the below listed options to issue object related actions',
-    'icon.png',
+    determine_serviceicon($service_object),
     'no',
     ''
   );
@@ -81,12 +94,16 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 } else if ( is_string($substr = check_args_prefix('servicegroup:', $inQuery)) ) {
 
   // work for host: servicegroup
+  $filter = '[servicegroups] name = "' . $substr . '"';
+  $fetch_result = fetch_op5_api($filter, url_columns('servicegroups'));
+  $servicegroup_object = $fetch_result[0];
+
   $w->result(
     '',
     '',
-    'Servicegroup object: ' . $substr,
+    'Servicegroup: ' . $substr,
     'choose from one of the below listed options to issue object related actions',
-    'icon.png',
+    determine_servicegroupicon($servicegroup_object),
     'no',
     ''
   );
