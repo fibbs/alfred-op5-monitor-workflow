@@ -62,6 +62,30 @@ if ($opmode == "sethostname") {
 
   echo $w->toxml();
 
+} else if ($opmode == "setgetauth") {
+
+  $w->result(
+    '', 
+    $opmode . ' on', 
+    'Set HTTP GET authentication ON', 
+    'This requires additional setup in your op5 Monitor settings', 
+    'icon.png', 
+    'yes', 
+    '' 
+  );
+
+  $w->result(
+    '', 
+    $opmode . ' off', 
+    'Set HTTP GET authentication OFF', 
+    'This is the default setting', 
+    'icon.png', 
+    'yes', 
+    '' 
+  );
+
+  echo $w->toxml();
+
 } else if (empty($opmode)) {
 
   // try to read the settings.plist
@@ -83,10 +107,10 @@ if ($opmode == "sethostname") {
     $password_text = 'password is not yet set';
   }
 
-  if ($defaultmode = $w->get('defaultmode', $config_plist)) {
-    $defaultmode_text = 'Default mode is set to ' . $defaultmode;
+  if (is_string( $get_authentication = $w->get('get_authentication', $config_plist)) and $get_authentication == "on") {
+    $get_authentication_text = 'HTTP GET authentication is enabled';
   } else {
-    $defaultmode_text = 'Default mode is not yet set (hosts will be used in this case)';
+    $get_authentication_text = 'HTTP GET authentication is disabled';
   }
 
   $w->result(
@@ -117,6 +141,16 @@ if ($opmode == "sethostname") {
     'icon.png',
     'no',
     'setpassword '
+  );
+
+  $w->result(
+    '',
+    '',
+    'Set HTTP GET authentication',
+    $get_authentication_text,
+    'icon.png',
+    'no',
+    'setgetauth '
   );
 
   echo $w->toxml();

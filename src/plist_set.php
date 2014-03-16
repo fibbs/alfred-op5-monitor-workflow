@@ -41,14 +41,14 @@ if ($opmode == "sethostname") {
   }
 
 
-} else if ($opmode == "setdefaultmode") {
+} else if ($opmode == "setgetauth") {
 
-  $w->set('defaultmode', $entry, $config_plist);
+  $w->set('get_authentication', $entry, $config_plist);
 
-  if ($w->get('defaultmode', $config_plist) == $entry) {
-    print 'successfully set default mode to ' . $entry;
+  if ($w->get('get_authentication', $config_plist) == $entry) {
+    print 'successfully set HTTP GET authentication to ' . $entry;
   } else {
-    print 'error setting default mode ' . $entry;
+    print 'error setting HTTP GET authentication to ' . $entry;
   }
 
 } else {
