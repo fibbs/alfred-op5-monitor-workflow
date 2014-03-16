@@ -31,11 +31,9 @@ if (is_string( $get_authentication_val = $w->get('get_authentication', $config_p
   $get_authentication = false;
 }
 
-/*
 if (empty($username) or empty($password) or empty($api_hostname)) {
   error_http_connect();
 }
- */
 
 require_once('inc_functions.php');
 
