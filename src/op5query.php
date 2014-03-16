@@ -141,23 +141,6 @@ if ($opmode == "hosts") {
     }
     $servicestext = implode(', ', $serviceelements);
 
-    if ($host->last_check == 0) {
-      $hosticon_hoststate = 3;
-    } else {
-      $hosticon_hoststate = $host->state;
-    }
-
-    if ($host->num_services_crit >0) {
-      $hosticon_servicestate = 2;
-    } else if ($host->num_services_warn >0) {
-      $hosticon_servicestate = 1;
-    } else if ($host->num_services_unknown >0) {
-      $hosticon_servicestate = 3;
-    } else if ($host->num_services_pending >0) {
-      $hosticon_servicestate = 4;
-    } else {
-      $hosticon_servicestate = 0;
-    }
 
     // ########################## here's the magic
     $w->result(
@@ -165,7 +148,7 @@ if ($opmode == "hosts") {
       'host:' . $host->name, 
       $host->name . " (" . $host->alias . ")", 
       $servicestext . " services (host is " . $hoststatusmap[$host->state] . " since ".time_since($host->duration).")", 
-      'icons/hoststatus-'.$hosticon_hoststate.'-'.$hosticon_servicestate.'.png', 
+      determine_hosticon($host), 
       'yes', 
       's:' . $host->name . ';'
     );
@@ -198,19 +181,13 @@ if ($opmode == "hosts") {
       $service_description = $service->host->name . " / " . $service->description;
     }
 
-    if ($service->state_text == "pending") {
-      $service_icon = 'icons/servicestatus-4.png';
-    } else {
-      $service_icon = 'icons/servicestatus-'.$service->state.'.png';
-    }
-
     // ########################## here's the magic
     $w->result(
       '', 
       'service:' . $service->host->name . ';' . $service->description, 
       $service_description, 
       'since ' . time_since($service->duration) . ' - ' . $service->plugin_output, 
-      $service_icon, 
+      determine_serviceicon($service), 
       'yes', 
       '' 
     );
@@ -240,18 +217,6 @@ if ($opmode == "hosts") {
     // skip empty hostgroups (can be safely commented out)
     if ($hostgroup->num_hosts === 0) {
       continue;
-    }
-
-    if ($hostgroup->num_hosts > 0) {
-      $icon_hostpart = $hostgroup->worst_host_state;
-    } else {
-      $icon_hostpart = 3;
-    }
-
-    if ($hostgroup->num_services >0) {
-      $icon_servicepart = $hostgroup->worst_service_state;
-    } else {
-      $icon_servicepart = 4;
     }
 
     $host_details = array();
@@ -296,7 +261,7 @@ if ($opmode == "hosts") {
       'hostgroup:' . $hostgroup->name, 
       $hostgroup->name, 
       'hosts: ' . implode(', ', $host_details) . ', services: ' . implode(', ', $service_details), 
-      'icons/hoststatus-' . $icon_hostpart . '-' . $icon_servicepart . '.png', 
+      determine_hostgroupicon($hostgroup),
       'yes', 
       'm:' . $hostgroup->name 
     );
@@ -329,12 +294,6 @@ if ($opmode == "hosts") {
       continue;
     }
 
-    if ($servicegroup->num_services >0) {
-      $sg_icon = 'icons/servicestatus-' . $servicegroup->worst_service_state . '.png';
-    } else {
-      $sg_icon = 'icons/servicestatus-4.png';
-    }
-
     $service_details = array();
     if ($servicegroup->num_services_crit > 0) {
       $service_details[] = $servicegroup->num_services_crit . ' CRIT';
@@ -360,7 +319,7 @@ if ($opmode == "hosts") {
       'servicegroup:' . $servicegroup->name, 
       $servicegroup->name, 
       'services: ' . implode(', ', $service_details), 
-      $sg_icon, 
+      determine_servicegroupicon($servicegroup),
       'yes', 
       'M:' . $servicegroup->name 
     );
