@@ -1,4 +1,4 @@
-op5 Monitor ([Download v0.2.2](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
+op5 Monitor ([Download v0.2.3](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
 ==============================
 
 Alfred 2 workflow for the commercial Nagios-based network monitoring
