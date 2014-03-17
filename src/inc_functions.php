@@ -32,7 +32,9 @@ function url_columns ($opmode) {
       'num_services_crit',
       'num_services_unknown',
       'num_services_pending',
-      'duration'
+      'duration',
+      'acknowledged',
+      'worst_service_hard_state'
     );
   } else if ($opmode == "saved_filters") {
     $columns = array(
@@ -49,7 +51,8 @@ function url_columns ($opmode) {
       'state_text',
       'plugin_output',
       'host.name',
-      'duration'
+      'duration',
+      'acknowledged'
     );
   } else if ($opmode == "hostgroups") {
     $columns = array(
