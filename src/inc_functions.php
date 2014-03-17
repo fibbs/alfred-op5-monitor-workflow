@@ -32,7 +32,10 @@ function url_columns ($opmode) {
       'num_services_crit',
       'num_services_unknown',
       'num_services_pending',
-      'duration'
+      'duration',
+      'acknowledged',
+      'worst_service_hard_state',
+      'pnpgraph_present'
     );
   } else if ($opmode == "saved_filters") {
     $columns = array(
@@ -49,7 +52,9 @@ function url_columns ($opmode) {
       'state_text',
       'plugin_output',
       'host.name',
-      'duration'
+      'duration',
+      'acknowledged',
+      'pnpgraph_present'
     );
   } else if ($opmode == "hostgroups") {
     $columns = array(
@@ -90,6 +95,7 @@ function fetch_op5_api ($filter, $columns) {
   global $api_hostname;
   global $username;
   global $password;
+  global $w;
 
   $url = 'https://'.$api_hostname.'/api/filter/query?query=' . urlencode($filter) . "&columns=" . $columns;
 
@@ -104,6 +110,59 @@ function fetch_op5_api ($filter, $columns) {
   curl_close($ch);
 
   $output = json_decode($output_json);
+
+  if ($output->error) {
+    $w->result(
+      '',
+      'api_error',
+      $output->error,
+      $output->full_error,
+      'icon.png',
+      'no',
+      ''
+    );
+    echo $w->toxml();
+    exit;
+  }
+
+  return $output;
+}
+
+function put_op5_api ($url, $data) {
+  global $api_hostname;
+  global $username;
+  global $password;
+  global $w;
+
+  $ch = curl_init ( $url );
+  curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt( $ch, CURLOPT_USERPWD, $username . ":" . $password );
+  curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+  curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, false );
+  curl_setopt( $ch, CURLOPT_POST, 1);
+  curl_setopt( $ch, CURLOPT_POSTFIELDS, $data);
+  curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+  $output_json = curl_exec( $ch );
+  $info = curl_getinfo($ch);
+  curl_close($ch);
+
+  $output = json_decode($output_json);
+
+  if ($output->error) {
+    $w->result(
+      '',
+      'api_error',
+      $output->error,
+      $output->full_error,
+      'icon.png',
+      'no',
+      ''
+    );
+    echo $w->toxml();
+    exit;
+  }
+
   return $output;
 }
 
@@ -408,5 +467,242 @@ function build_object_url($query) {
   }
 
   return $url;
+}
+
+function build_pnpgraph_url($hostname, $servicedescription) {
+  global $api_hostname;
+  global $get_authentication;
+  global $username;
+  global $password;
+
+  $url = 'https://' . $api_hostname . '/monitor/index.php/pnp/?host=' . urlencode($hostname) . '&srv=' . urlencode($servicedescription);
+
+  if ($get_authentication) {
+    $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+  }
+
+  return $url;
+}
+
+function determine_hosticon($host_object) {
+  if ($host_object->last_check == 0) {
+   $hosticon_hoststate = 3;
+  } else {
+    $hosticon_hoststate = $host_object->state;
+  }
+
+  if ($host_object->num_services_crit >0) {
+    $hosticon_servicestate = 2;
+  } else if ($host_object->num_services_warn >0) {
+    $hosticon_servicestate = 1;
+  } else if ($host_object->num_services_unknown >0) {
+    $hosticon_servicestate = 3;
+  } else if ($host_object->num_services_pending >0) {
+    $hosticon_servicestate = 4;
+  } else {
+    $hosticon_servicestate = 0;
+  }  
+
+  return 'icons/hoststatus-'.$hosticon_hoststate.'-'.$hosticon_servicestate.'.png';
+}
+
+function determine_serviceicon($service_object) {
+  if ($service_object->state_text == "pending") {
+    return 'icons/servicestatus-4.png';
+  } else {
+    return 'icons/servicestatus-'.$service_object->state.'.png';
+  }
+}
+
+function determine_hostgroupicon($hostgroup_object) {
+  if ($hostgroup_object->num_hosts > 0) {
+    $icon_hostpart = $hostgroup_object->worst_host_state;
+  } else {
+    $icon_hostpart = 3;
+  }
+
+  if ($hostgroup_object->num_services >0) {
+    $icon_servicepart = $hostgroup_object->worst_service_state;
+  } else {
+    $icon_servicepart = 4;
+  }
+
+  return 'icons/hoststatus-'.$icon_hostpart.'-'.$icon_servicepart.'.png';
+}
+
+function determine_servicegroupicon($servicegroup_object) {
+  if ($servicegroup_object->num_services >0) {
+    return 'icons/servicestatus-' . $servicegroup_object->worst_service_state . '.png';
+  } else {
+    return 'icons/servicestatus-4.png';
+  }
+}
+
+function acknowledge_host($hostname, $comment) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/ACKNOWLEDGE_HOST_PROBLEM';
+
+  $data = json_encode(array(
+    "host_name"   =>    $hostname,
+    "sticky"      =>    0,
+    "notify"      =>    "true",
+    "persistent"  =>    "true",
+    "comment"     =>    $comment));
+
+  return put_op5_api($url, $data);
+}
+
+function acknowledge_service($hostname, $servicedescription, $comment) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/ACKNOWLEDGE_SVC_PROBLEM';
+
+  $data = json_encode(array(
+    "host_name"             =>    $hostname,
+    "service_description"   =>    $servicedescription,
+    "sticky"                =>    0,
+    "notify"                =>    "true",
+    "persistent"            =>    "true",
+    "comment"               =>    $comment));
+
+  return put_op5_api($url, $data);
+}
+
+function acknowledge_host_with_services($hostname, $comment) {
+  acknowledge_host($hostname, $comment);
+
+  $filter = '[services] host.name = "' . $hostname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($hostname, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function acknowledge_hosts_services($hostname, $comment) {
+  $filter = '[services] host.name = "' . $hostname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($hostname, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function acknowledge_hg_hosts($groupname, $comment) {
+  $filter = '[hosts] groups >= "' . $groupname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('hosts'));
+
+  $hostcounter = 0;
+  $servicecounter = 0;
+  foreach ($fetch_result as $host) {
+    $nr_of_svc = acknowledge_host_with_services($host->name, $comment);
+    $servicecounter = $servicecounter + $nr_of_svc;
+    $hostcounter++;
+  }
+
+  return array($hostcounter, $servicecounter);
+}
+
+function acknowledge_hg_svcs($groupname, $comment) {
+  $filter = '[services] host.groups >= "' . $groupname . '" and host.state = 0 and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($service->host->name, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function acknowledge_svcgroup($groupname, $comment) {
+  $filter = '[services] groups >= "' . $groupname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($service->host->name, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function reschedule_host($hostname) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/SCHEDULE_HOST_CHECK';
+
+  $data = json_encode(array(
+    "host_name"   =>      $hostname,
+    "check_time"     =>   time()
+    )
+  );
+
+  return put_op5_api($url, $data);
+}
+
+function reschedule_service($hostname, $servicedescription) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/SCHEDULE_SVC_CHECK';
+
+  $data = json_encode(array(
+    "host_name"           =>      $hostname,
+    "service_description" =>      $servicedescription,
+    "check_time"          =>      time()
+    )
+  );
+
+  return put_op5_api($url, $data);
+}
+
+function reschedule_host_with_services($hostname) {
+  reschedule_host($hostname);
+
+  $filter = '[services] host.name = "' . $hostname . '" and active_checks_enabled = 1';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    reschedule_service($hostname, $service->description);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function reschedule_hostgroup($hostgroupname) {
+  $filter = '[hosts] groups >= "' . $hostgroupname . '"';
+  $fetch_result = fetch_op5_api($filter, url_columns('hosts'));
+
+  $hostcounter = 0;
+  $servicecounter = 0;
+  foreach ($fetch_result as $host) {
+    $nr_of_svc = reschedule_host_with_services($host->name);
+    $servicecounter = $servicecounter + $nr_of_svc;
+    $hostcounter++;
+  }
+
+  return array($hostcounter, $servicecounter);
+}
+
+function reschedule_svcgrp($groupname) {
+  $filter = '[services] groups >= "' . $groupname . '" and active_checks_enabled = 1';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    reschedule_service($service->host->name, $service->description);
+    $counter++;
+  }
+
+  return $counter;
 }
 ?>
