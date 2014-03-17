@@ -83,6 +83,38 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     'no',
     ''
   );
+
+  if ($hostgroup_object->worst_host_state != 0) {
+    $inner_filter = '[hosts] groups >= "' . $substr . '" and state != 0 and acknowledged = 0';
+    $fetch_result = fetch_op5_api($inner_filter, url_columns('hosts'));
+    if (count($fetch_result) > 0) {
+      $w->result(
+        '',
+        '',
+        'Acknowledge all host problems in this host group',
+        '',
+        'icon.png',
+        'no',
+        ''
+      );
+    }
+  }
+
+  if ($hostgroup_object->worst_service_state != 0) {
+    $inner_filter = '[services] host.groups >= "' . $substr . '" and state != 0 and host.state = 0 and acknowledged = 0';
+    $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
+    if (count($fetch_result) > 0) {
+      $w->result(
+        '',
+        '',
+        'Acknowledge service problems on UP members of this hostgroup',
+        '',
+        'icon.png',
+        'no',
+        ''
+      );
+    }
+  }
   echo $w->toxml();
 
 } else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
