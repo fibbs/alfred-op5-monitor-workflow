@@ -65,6 +65,22 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     );
   }
 
+  if ($host_object->state == 0 and $host_object->worst_service_hard_state != 0) {
+    $inner_filter = '[services] host.name = "' . $substr . '" and state != 0 and acknowledged = 0';
+    $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
+    if (count($fetch_result)) {
+      $w->result(
+        '',
+        '',
+        'Acknowledge all service problems on this host',
+        '',
+        'icon.png',
+        'no',
+        ''
+      );
+    }
+  }
+
   echo $w->toxml();
 
 } else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
@@ -134,6 +150,8 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     'no',
     ''
   );
+
+
   echo $w->toxml();
 
 } else if ( is_string($substr = check_args_prefix('servicegroup:', $inQuery)) ) {
