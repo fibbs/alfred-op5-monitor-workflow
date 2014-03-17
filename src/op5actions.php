@@ -151,6 +151,17 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     ''
   );
 
+  if ($service_object->state != 0 and $service_object->acknowledged == 0) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge service problem',
+      '',
+      'icon.png',
+      'no',
+      ''
+    );
+  }
 
   echo $w->toxml();
 
@@ -170,6 +181,23 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     'no',
     ''
   );
+
+  if ($servicegroup_object->worst_service_state != 0) {
+    $inner_filter = '[services] groups >= "' . $substr . '" and state != 0 and acknowledged = 0';
+    $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
+    if (count($fetch_result)) {
+      $w->result(
+        '',
+        '',
+        'Acknowledge all service problems in this service group',
+        '',
+        'icon.png',
+        'no',
+        ''
+      );
+    }
+  }
+
   echo $w->toxml();
 
 } else {

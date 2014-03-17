@@ -51,7 +51,8 @@ function url_columns ($opmode) {
       'state_text',
       'plugin_output',
       'host.name',
-      'duration'
+      'duration',
+      'acknowledged'
     );
   } else if ($opmode == "hostgroups") {
     $columns = array(
