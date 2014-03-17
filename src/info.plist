@@ -286,6 +286,8 @@ end tell</string>
 if echo $OUTPUT | grep -qe "^url: "; then
 	URL=$(echo $OUTPUT | sed -e "s/^url: //")
 	open $URL
+else
+	echo "{query}" &gt;~/tmp/myquery
 fi</string>
 				<key>type</key>
 				<integer>0</integer>
