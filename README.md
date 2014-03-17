@@ -93,7 +93,19 @@ Tab-completion works as follows:
 - saved filters tab completion leads to the actual result of the corresponding filter
 
 #### Select-action for objects
-This feature is not yet implemented!
+On every displayed object such as hosts, services etc. you can hit the <Enter> key and you will get directed to the op5 Monitor web user interface displaying the corresponding object. This way, pressing <Enter> on a host object takes you to a list of all services of this host, and from a host group object it takes you to a list of all hosts within this host group, and so on.
+
+Beside of the <Enter> actions there also are some object-specific actions that you can call by hitting <cmd>-<Enter> when selecting any object from within the query module. This <cmd> action will take you to a separate module of this workflow, the Actions module that offers additional object-specific actions. 
+
+## The Actions module
+This module offers several actions depending on the object type, the state and other metadata of the selected object:
+
+![alt text][op5-workflow-img009]
+
+- The first line will always contain the type and the name of the object. Hitting <Enter> from here takes you to the object's details in your op5 Monitor web UI, the same that would happen pressing the <Enter> key directly on an object from within the query module.
+- Depending on if the specific object has performance graphs (only applicable to host and service objects), an option that takes you directly to the page with the performance graphs will be shown.
+- Depending on the type and the state of the object and the objects belonging to it, options that allows you to ACKNOWLEDGE one or several host/service problems at the same time are displayed. The ACKNOWLEDGE will be executed after you supplied an acknowledgement comment. You can acknowledge a single host problem and all this host's service problems at the same time, or all service problems on OK hosts within a whole host group and much more.
+- For all host, hostgroup, service and servicegroup object, a re-check option is displayed. This option allows you to send op5 Monitor a command to re-check objects immediately in order to update their state. There are options to re-check many objects at the same time, such as "all services belonging to a specific host" or "all hosts and their services belonging to a certain host group".
 
 ## Configuration module
 By calling the workflow with the `monconf` command you will be presented
@@ -104,7 +116,7 @@ with the options to configure the following necessary values:
 - password
 - op5 Monitor "HTTP GET authentication"
 
-![alt text][op5-workflow-img009]
+![alt text][op5-workflow-img010]
 
 ### HTTP GET authentication
 op5 Monitor supports HTTP GET authentication so you can authenticate to your op5 Monitor Web UI without being presented a login prompt, just by submitting the username and password within the URL using GET parameters. Note: Authenticating using GET parameters can be a security risk, since the username and password will be part of the URL and therefore can be exposed in various places such as the address bar of the web browser, web server log files and saved bookmarks.
@@ -114,7 +126,7 @@ More information on this feature and an explanation on how to enable it in your 
 ## Commands
 - `mon {query}`
 - `monconf`
-- `monaction`
+- `op5actions`
 
 ## Donate
 I have created this workflow mainly for myself. But if it is as useful
@@ -132,4 +144,4 @@ euros for it, I will not stop you from doing so.
 [op5-workflow-img006]: ./screenshots/op5-workflow-006.png "Negating a filter"
 [op5-workflow-img007]: ./screenshots/op5-workflow-007.png "only show objects that have problems"
 [op5-workflow-img008]: ./screenshots/op5-workflow-008.png "Enter a filter directly"
-[op5-workflow-img009]: ./screenshots/op5-workflow-009.png "Configuration"
+[op5-workflow-img010]: ./screenshots/op5-workflow-009.png "Configuration"
