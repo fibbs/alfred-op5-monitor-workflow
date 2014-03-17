@@ -19,6 +19,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>AAA92C6E-F5E1-48BD-87C8-2780A6BF26CF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>822E00E3-35D7-44B5-AA36-314B6F2C9572</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
 		<array>
 			<dict>
@@ -34,7 +45,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>D3B825BD-92D7-4582-9837-83914151B760</string>
+				<string>AAA92C6E-F5E1-48BD-87C8-2780A6BF26CF</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -215,17 +226,25 @@ end tell</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
+				<key>lastpathcomponent</key>
 				<false/>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
+				<key>onlyshowifquerypopulated</key>
 				<true/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>op5 Monitor Action</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
+			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
-			<string>D3B825BD-92D7-4582-9837-83914151B760</string>
+			<string>822E00E3-35D7-44B5-AA36-314B6F2C9572</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -253,6 +272,28 @@ end tell</string>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>script</key>
+				<string>OUTPUT="{query}"
+
+if echo $OUTPUT | grep -qe "^url: "; then
+	URL=$(echo $OUTPUT | sed -e "s/^url: //")
+	open $URL
+fi</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>AAA92C6E-F5E1-48BD-87C8-2780A6BF26CF</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -347,17 +388,22 @@ end tell</string>
 			<key>ypos</key>
 			<real>450</real>
 		</dict>
+		<key>822E00E3-35D7-44B5-AA36-314B6F2C9572</key>
+		<dict>
+			<key>ypos</key>
+			<real>250</real>
+		</dict>
+		<key>AAA92C6E-F5E1-48BD-87C8-2780A6BF26CF</key>
+		<dict>
+			<key>ypos</key>
+			<real>250</real>
+		</dict>
 		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
 		<dict>
 			<key>ypos</key>
 			<real>130</real>
 		</dict>
 		<key>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</key>
-		<dict>
-			<key>ypos</key>
-			<real>250</real>
-		</dict>
-		<key>D3B825BD-92D7-4582-9837-83914151B760</key>
 		<dict>
 			<key>ypos</key>
 			<real>250</real>

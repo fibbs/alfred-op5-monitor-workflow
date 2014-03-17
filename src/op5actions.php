@@ -25,6 +25,11 @@ $inQuery = implode(' ', $argv);
 $username = $w->get('username', $config_plist);
 $password = $w->get('password', $config_plist);
 $api_hostname = $w->get('hostname', $config_plist);
+if (is_string( $get_authentication_val = $w->get('get_authentication', $config_plist)) and $get_authentication_val == "on") {
+  $get_authentication = true;
+} else {
+  $get_authentication = false;
+}
 
 require_once('inc_functions.php');
 
@@ -45,11 +50,11 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   $w->result(
     '',
-    '',
+    'url: ' . build_object_url('host: ' . $substr),
     'Host: ' . $substr,
     'choose from one of the below listed options to issue object related actions',
     determine_hosticon($host_object),
-    'no',
+    'yes',
     ''
   );
 
@@ -92,11 +97,11 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   $w->result(
     '',
-    '',
+    'url: ' . build_object_url('hostgroup: ' . $substr),
     'Hostgroup: ' . $substr,
     'choose from one of the below listed options to issue object related actions',
     determine_hostgroupicon($hostgroup_object),
-    'no',
+    'yes',
     ''
   );
 
@@ -143,11 +148,11 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   $w->result(
     '',
-    '',
+    'url: ' . build_object_url('service: ' . $substr),
     'Service: ' . $myservice . " on " . $myhost,
     'choose from one of the below listed options to issue object related actions',
     determine_serviceicon($service_object),
-    'no',
+    'yes',
     ''
   );
 
@@ -174,11 +179,11 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   $w->result(
     '',
-    '',
+    'url: ' . build_object_url('servicegroup: ' . $substr),
     'Servicegroup: ' . $substr,
     'choose from one of the below listed options to issue object related actions',
     determine_servicegroupicon($servicegroup_object),
-    'no',
+    'yes',
     ''
   );
 
