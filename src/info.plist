@@ -160,7 +160,7 @@ open $MYURL</string>
 				<key>runningsubtext</key>
 				<string>loading…</string>
 				<key>script</key>
-				<string>php -f op5query.php "{query}"</string>
+				<string>php -f mon.php "{query}"</string>
 				<key>subtext</key>
 				<string>Query op5 Monitor by short codes or host names</string>
 				<key>title</key>
@@ -286,6 +286,8 @@ end tell</string>
 if echo $OUTPUT | grep -qe "^url: "; then
 	URL=$(echo $OUTPUT | sed -e "s/^url: //")
 	open $URL
+else
+	php -f op5actions_execute.php "{query}"
 fi</string>
 				<key>type</key>
 				<integer>0</integer>
@@ -381,12 +383,12 @@ fi</string>
 		<key>155644DB-979F-4481-912A-704E823D142B</key>
 		<dict>
 			<key>ypos</key>
-			<real>450</real>
+			<real>370</real>
 		</dict>
 		<key>2EFDF04E-65C1-4FBA-AE37-86514AF2BA23</key>
 		<dict>
 			<key>ypos</key>
-			<real>450</real>
+			<real>370</real>
 		</dict>
 		<key>822E00E3-35D7-44B5-AA36-314B6F2C9572</key>
 		<dict>
@@ -416,7 +418,7 @@ fi</string>
 		<key>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</key>
 		<dict>
 			<key>ypos</key>
-			<real>450</real>
+			<real>370</real>
 		</dict>
 		<key>F59FE0A1-294B-4A3A-A459-ECFE014A7518</key>
 		<dict>

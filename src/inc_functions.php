@@ -126,6 +126,44 @@ function fetch_op5_api ($filter, $columns) {
   return $output;
 }
 
+function put_op5_api ($url, $data) {
+  global $api_hostname;
+  global $username;
+  global $password;
+  global $w;
+
+  $ch = curl_init ( $url );
+  curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt( $ch, CURLOPT_USERPWD, $username . ":" . $password );
+  curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+  curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, false );
+  curl_setopt( $ch, CURLOPT_POST, 1);
+  curl_setopt( $ch, CURLOPT_POSTFIELDS, $data);
+  curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+  $output_json = curl_exec( $ch );
+  $info = curl_getinfo($ch);
+  curl_close($ch);
+
+  $output = json_decode($output_json);
+
+  if ($output->error) {
+    $w->result(
+      '',
+      'api_error',
+      $output->error,
+      $output->full_error,
+      'icon.png',
+      'no',
+      ''
+    );
+    echo $w->toxml();
+    exit;
+  }
+
+  return $output;
+}
+
 function time_since ($duration) {
 
   if ($duration > 86400) {
@@ -481,5 +519,103 @@ function determine_servicegroupicon($servicegroup_object) {
   } else {
     return 'icons/servicestatus-4.png';
   }
+}
+
+function acknowledge_host($hostname, $comment) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/ACKNOWLEDGE_HOST_PROBLEM';
+
+  $data = json_encode(array(
+    "host_name"   =>    $hostname,
+    "sticky"      =>    0,
+    "notify"      =>    "true",
+    "persistent"  =>    "true",
+    "comment"     =>    $comment));
+
+  return put_op5_api($url, $data);
+}
+
+function acknowledge_service($hostname, $servicedescription, $comment) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/ACKNOWLEDGE_SVC_PROBLEM';
+
+  $data = json_encode(array(
+    "host_name"             =>    $hostname,
+    "service_description"   =>    $servicedescription,
+    "sticky"                =>    0,
+    "notify"                =>    "true",
+    "persistent"            =>    "true",
+    "comment"               =>    $comment));
+
+  return put_op5_api($url, $data);
+}
+
+function acknowledge_host_with_services($hostname, $comment) {
+  acknowledge_host($hostname, $comment);
+
+  $filter = '[services] host.name = "' . $hostname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($hostname, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function acknowledge_hosts_services($hostname, $comment) {
+  $filter = '[services] host.name = "' . $hostname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($hostname, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function acknowledge_hg_hosts($groupname, $comment) {
+  $filter = '[hosts] groups >= "' . $groupname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('hosts'));
+
+  $hostcounter = 0;
+  $servicecounter = 0;
+  foreach ($fetch_result as $host) {
+    $nr_of_svc = acknowledge_host_with_services($host->name, $comment);
+    $servicecounter = $servicecounter + $nr_of_svc;
+    $hostcounter++;
+  }
+
+  return array($hostcounter, $servicecounter);
+}
+
+function acknowledge_hg_svcs($groupname, $comment) {
+  $filter = '[services] host.groups >= "' . $groupname . '" and host.state = 0 and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($service->host->name, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function acknowledge_svcgroup($groupname, $comment) {
+  $filter = '[services] groups >= "' . $groupname . '" and state != 0 and acknowledged = 0';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    acknowledge_service($service->host->name, $service->description, $comment);
+    $counter++;
+  }
+
+  return $counter;
 }
 ?>

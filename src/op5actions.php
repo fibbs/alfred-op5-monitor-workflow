@@ -41,7 +41,187 @@ if (empty($username) or empty($password) or empty($api_hostname)) {
 
 
 // now check the prefix string and act accordingly
-if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
+if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
+
+  // work for ack_host: prefix
+  list($action_prefix, $host_name, $comment) = explode(':', $inQuery);
+
+  if (empty($comment)) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge host problem',
+      'type a comment and hit <Enter> to continue',
+      'icon.png',
+      'no',
+      ''
+    );
+  } else {
+    $w->result(
+      '',
+      $inQuery,
+      'Acknowledge host problem',
+      'Using comment: ' . $comment,
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
+  echo $w->toxml();
+  exit;
+
+} else if ( is_string($substr = check_args_prefix('ack_host_svcs:', $inQuery)) ) {
+
+  // work for ack_host_svcs: prefix
+  list($action_prefix, $host_name, $comment) = explode(':', $inQuery);
+
+  if (empty($comment)) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge service problems on host',
+      'type a comment and hit <Enter> to continue',
+      'icon.png',
+      'no',
+      ''
+    );
+  } else {
+    $w->result(
+      '',
+      $inQuery,
+      'Acknowledge service problems on host',
+      'Using comment: ' . $comment,
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
+  echo $w->toxml();
+  exit;
+
+} else if ( is_string($substr = check_args_prefix('ack_hg_hosts:', $inQuery)) ) {
+
+  // work for ack_host_svcs: prefix
+  list($action_prefix, $hostgroup_name, $comment) = explode(':', $inQuery);
+
+  if (empty($comment)) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge all host problems (and their service problems) in group',
+      'type a comment and hit <Enter> to continue',
+      'icon.png',
+      'no',
+      ''
+    );
+  } else {
+    $w->result(
+      '',
+      $inQuery,
+      'Acknowledge all host problems (and their service problems) in group',
+      'Using comment: ' . $comment,
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
+  echo $w->toxml();
+  exit;
+
+} else if ( is_string($substr = check_args_prefix('ack_hg_svcs:', $inQuery)) ) {
+
+  // work for ack_host_svcs: prefix
+  list($action_prefix, $hostgroup_name, $comment) = explode(':', $inQuery);
+
+  if (empty($comment)) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge all service problems in this host group',
+      'type a comment and hit <Enter> to continue',
+      'icon.png',
+      'no',
+      ''
+    );
+  } else {
+    $w->result(
+      '',
+      $inQuery,
+      'Acknowledge all service problems in this host group',
+      'Using comment: ' . $comment,
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
+  echo $w->toxml();
+  exit;
+
+} else if ( is_string($substr = check_args_prefix('ack_svc:', $inQuery)) ) {
+
+  // work for ack_host_svcs: prefix
+  list($action_prefix, $service_name, $comment) = explode(':', $inQuery);
+
+  if (empty($comment)) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge service problem',
+      'type a comment and hit <Enter> to continue',
+      'icon.png',
+      'no',
+      ''
+    );
+  } else {
+    $w->result(
+      '',
+      $inQuery,
+      'Acknowledge service problem',
+      'Using comment: ' . $comment,
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
+  echo $w->toxml();
+  exit;
+
+} else if ( is_string($substr = check_args_prefix('ack_svcgrp:', $inQuery)) ) {
+
+  // work for ack_host_svcs: prefix
+  list($action_prefix, $servicegroup_name, $comment) = explode(':', $inQuery);
+
+  if (empty($comment)) {
+    $w->result(
+      '',
+      '',
+      'Acknowledge all service problems in group',
+      'type a comment and hit <Enter> to continue',
+      'icon.png',
+      'no',
+      ''
+    );
+  } else {
+    $w->result(
+      '',
+      $inQuery,
+      'Acknowledge all service problems in group',
+      'Using comment: ' . $comment,
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
+  echo $w->toxml();
+  exit;
+
+} else if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   // work for host: prefix
   $filter = '[hosts] name = "' . $substr . '"';
@@ -58,6 +238,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     ''
   );
 
+  // ACKNOWLEDGE host problem
   if ($host_object->state != 0 and $host_object->acknowledged == 0) {
     $w->result(
       '',
@@ -66,10 +247,11 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
       '',
       'icon.png',
       'no',
-      ''
+      'ack_host:' . $substr . ':'
     );
   }
 
+  // ACKNOWLEDGE all service problems on this host
   if ($host_object->state == 0 and $host_object->worst_service_hard_state != 0) {
     $inner_filter = '[services] host.name = "' . $substr . '" and state != 0 and acknowledged = 0';
     $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
@@ -81,7 +263,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
         '',
         'icon.png',
         'no',
-        ''
+        'ack_host_svcs:' . $substr . ':'
       );
     }
   }
@@ -105,6 +287,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     ''
   );
 
+  // ACKNOWLEDGE host group's host problems AND their service problems
   if ($hostgroup_object->worst_host_state != 0) {
     $inner_filter = '[hosts] groups >= "' . $substr . '" and state != 0 and acknowledged = 0';
     $fetch_result = fetch_op5_api($inner_filter, url_columns('hosts'));
@@ -116,11 +299,12 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
         '',
         'icon.png',
         'no',
-        ''
+        'ack_hg_hosts:' . $substr . ':'
       );
     }
   }
 
+  // ACKNOWLEDGE host group's service problems on OK hosts
   if ($hostgroup_object->worst_service_state != 0) {
     $inner_filter = '[services] host.groups >= "' . $substr . '" and state != 0 and host.state = 0 and acknowledged = 0';
     $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
@@ -132,7 +316,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
         '',
         'icon.png',
         'no',
-        ''
+        'ack_hg_svcs:' . $substr . ':'
       );
     }
   }
@@ -156,6 +340,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     ''
   );
 
+  // ACKNOWLEDGE service problem
   if ($service_object->state != 0 and $service_object->acknowledged == 0) {
     $w->result(
       '',
@@ -164,7 +349,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
       '',
       'icon.png',
       'no',
-      ''
+      'ack_svc:' . $substr . ':'
     );
   }
 
@@ -187,6 +372,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
     ''
   );
 
+  // ACKNOWLEDGE all service problems in service group 
   if ($servicegroup_object->worst_service_state != 0) {
     $inner_filter = '[services] groups >= "' . $substr . '" and state != 0 and acknowledged = 0';
     $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
@@ -198,7 +384,7 @@ if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
         '',
         'icon.png',
         'no',
-        ''
+        'ack_svcgrp:' . $substr . ':'
       );
     }
   }
