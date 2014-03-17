@@ -129,11 +129,12 @@ More information on this feature and an explanation on how to enable it in your 
 - `op5actions`
 
 ## Donate
-I have created this workflow mainly for myself. But if it is as useful
-for you as it is for me, and you feel the need to drop me some cents or
-euros for it, I will not stop you from doing so.
+This software is free and published under the MIT license. I have created this workflow mainly for myself and thought it could be useful for some others out there. If this workflow is as useful for you as it is for me, and you feel the need to drop me some cents or euros for it, I will not stop you from doing so. Use the following link to donate via PayPal.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32WRFW8GBHLWJ)
+
+## Follow
+I seldom write something on Twitter, but I am there. You can find me with the username ([@fibbsanton](https://twitter.com/fibbsanton)).
 
 
 [op5-workflow-img001]: ./screenshots/op5-workflow-001.png "op5 Monitor Workflow query modes overview"
