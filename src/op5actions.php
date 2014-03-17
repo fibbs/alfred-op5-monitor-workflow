@@ -243,6 +243,18 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
     ''
   );
 
+  if ($host_object->pnpgraph_present == 1) {
+    $w->result(
+      '',
+      'url: ' . build_pnpgraph_url($substr, '_HOST_'),
+      'Show Performance graphs for this host',
+      '',
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
+
   // ACKNOWLEDGE host problem
   if ($host_object->state != 0 and $host_object->acknowledged == 0) {
     $w->result(
@@ -368,6 +380,18 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
     'yes',
     ''
   );
+
+  if ($service_object->pnpgraph_present == 1) {
+    $w->result(
+      '',
+      'url: ' . build_pnpgraph_url($myhost, $myservice),
+      'Show Performance graphs for this service',
+      '',
+      'icon.png',
+      'yes',
+      ''
+    );
+  }
 
   // ACKNOWLEDGE service problem
   if ($service_object->state != 0 and $service_object->acknowledged == 0) {

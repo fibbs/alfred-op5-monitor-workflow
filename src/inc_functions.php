@@ -34,7 +34,8 @@ function url_columns ($opmode) {
       'num_services_pending',
       'duration',
       'acknowledged',
-      'worst_service_hard_state'
+      'worst_service_hard_state',
+      'pnpgraph_present'
     );
   } else if ($opmode == "saved_filters") {
     $columns = array(
@@ -52,7 +53,8 @@ function url_columns ($opmode) {
       'plugin_output',
       'host.name',
       'duration',
-      'acknowledged'
+      'acknowledged',
+      'pnpgraph_present'
     );
   } else if ($opmode == "hostgroups") {
     $columns = array(
@@ -462,6 +464,21 @@ function build_object_url($query) {
       $url = $url . "?username=".urlencode($username)."&password=".urlencode($password);
     }
 
+  }
+
+  return $url;
+}
+
+function build_pnpgraph_url($hostname, $servicedescription) {
+  global $api_hostname;
+  global $get_authentication;
+  global $username;
+  global $password;
+
+  $url = 'https://' . $api_hostname . '/monitor/index.php/pnp/?host=' . urlencode($hostname) . '&srv=' . urlencode($servicedescription);
+
+  if ($get_authentication) {
+    $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
   }
 
   return $url;

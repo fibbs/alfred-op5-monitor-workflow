@@ -285,9 +285,10 @@ end tell</string>
 
 if echo $OUTPUT | grep -qe "^url: "; then
 	URL=$(echo $OUTPUT | sed -e "s/^url: //")
+	#DEBUG echo $URL &gt;~/tmp/url
 	open $URL
 else
-	php -f op5actions_execute.php "{query}" &gt;~/tmp/output
+	php -f op5actions_execute.php "{query}"
 fi</string>
 				<key>type</key>
 				<integer>0</integer>
