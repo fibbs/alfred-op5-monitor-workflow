@@ -39,208 +39,43 @@ if (empty($username) or empty($password) or empty($api_hostname)) {
 }
  */
 
-
-// now check the prefix string and act accordingly
+// MAIN workflow
 if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
 
-  // work for ack_host: prefix
-  $w->result(
-    '',
-    $inQuery,
-    'ACKACKACK',
-    '',
-    'icon.png',
-    'no',
-    ''
-  );
-  echo $w->toxml();
-  exit;
+  list($hostname, $comment) = explode(':', $substr);
+  $output = acknowledge_host_with_services($hostname, $comment); 
+  echo "Acknowledged 1 host and " . $output . " services with comment " .$comment. "\n";
 
-} else if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
+} else if ( is_string($substr = check_args_prefix('ack_host_svcs:', $inQuery)) ) {
 
-  // work for host: prefix
-  $filter = '[hosts] name = "' . $substr . '"';
-  $fetch_result = fetch_op5_api($filter, url_columns('hosts'));
-  $host_object = $fetch_result[0];
+  list($hostname, $comment) = explode(':', $substr);
+  $output = acknowledge_hosts_services($hostname, $comment); 
+  echo "Acknowledged " . $output . " services with comment " .$comment. "\n";
 
-  $w->result(
-    '',
-    'url: ' . build_object_url('host: ' . $substr),
-    'Host: ' . $substr,
-    'choose from one of the below listed options to issue object related actions',
-    determine_hosticon($host_object),
-    'yes',
-    ''
-  );
+} else if ( is_string($substr = check_args_prefix('ack_hg_hosts:', $inQuery)) ) {
 
-  // ACKNOWLEDGE host problem
-  if ($host_object->state != 0 and $host_object->acknowledged == 0) {
-    $w->result(
-      '',
-      '',
-      'Acknowledge host problem',
-      '',
-      'icon.png',
-      'no',
-      'ack_host:' . $substr
-    );
-  }
+  list($hostgroupname, $comment) = explode(':', $substr);
+  $output = acknowledge_hg_hosts($hostgroupname, $comment); 
+  echo "Acknowledged " . $output[0] . " hosts and " . $output[1] . " services with comment " .$comment. "\n";
 
-  // ACKNOWLEDGE all service problems on this host
-  if ($host_object->state == 0 and $host_object->worst_service_hard_state != 0) {
-    $inner_filter = '[services] host.name = "' . $substr . '" and state != 0 and acknowledged = 0';
-    $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
-    if (count($fetch_result)) {
-      $w->result(
-        '',
-        '',
-        'Acknowledge all service problems on this host',
-        '',
-        'icon.png',
-        'no',
-        'ack_host_svcs:' . $substr
-      );
-    }
-  }
+} else if ( is_string($substr = check_args_prefix('ack_hg_svcs:', $inQuery)) ) {
 
-  echo $w->toxml();
+  list($hostgroupname, $comment) = explode(':', $substr);
+  $output = acknowledge_hg_svcs($hostgroupname, $comment); 
+  echo "Acknowledged " . $output . " services with comment " .$comment. "\n";
 
-} else if ( is_string($substr = check_args_prefix('hostgroup:', $inQuery)) ) {
+} else if ( is_string($substr = check_args_prefix('ack_svc:', $inQuery)) ) {
 
-  // work for hostgroup: prefix
-  $filter = '[hostgroups] name = "' . $substr . '"';
-  $fetch_result = fetch_op5_api($filter, url_columns('hostgroups'));
-  $hostgroup_object = $fetch_result[0];
+  list($service, $comment) = explode(':', $substr);
+  list($service_host, $service_description) = explode(';', $service);
+  $output = acknowledge_service($service_host, $service_description, $comment); 
+  echo "Acknowledged 1 service with comment " .$comment. "\n";
 
-  $w->result(
-    '',
-    'url: ' . build_object_url('hostgroup: ' . $substr),
-    'Hostgroup: ' . $substr,
-    'choose from one of the below listed options to issue object related actions',
-    determine_hostgroupicon($hostgroup_object),
-    'yes',
-    ''
-  );
+} else if ( is_string($substr = check_args_prefix('ack_svcgrp:', $inQuery)) ) {
 
-  // ACKNOWLEDGE host group's host problems AND their service problems
-  if ($hostgroup_object->worst_host_state != 0) {
-    $inner_filter = '[hosts] groups >= "' . $substr . '" and state != 0 and acknowledged = 0';
-    $fetch_result = fetch_op5_api($inner_filter, url_columns('hosts'));
-    if (count($fetch_result) > 0) {
-      $w->result(
-        '',
-        '',
-        'Acknowledge all host problems in this host group',
-        '',
-        'icon.png',
-        'no',
-        'ack_hg_hosts:' . $substr
-      );
-    }
-  }
-
-  // ACKNOWLEDGE host group's service problems on OK hosts
-  if ($hostgroup_object->worst_service_state != 0) {
-    $inner_filter = '[services] host.groups >= "' . $substr . '" and state != 0 and host.state = 0 and acknowledged = 0';
-    $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
-    if (count($fetch_result) > 0) {
-      $w->result(
-        '',
-        '',
-        'Acknowledge service problems on UP members of this hostgroup',
-        '',
-        'icon.png',
-        'no',
-        'ack_hg_svcs:' . $substr
-      );
-    }
-  }
-  echo $w->toxml();
-
-} else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
-
-  // work for service: prefix
-  list($myhost, $myservice) = explode(';', $substr);
-  $filter = '[services] host.name = "' . $myhost . '" and description = "' . $myservice . '"';
-  $fetch_result = fetch_op5_api($filter, url_columns('services'));
-  $service_object = $fetch_result[0];
-
-  $w->result(
-    '',
-    'url: ' . build_object_url('service: ' . $substr),
-    'Service: ' . $myservice . " on " . $myhost,
-    'choose from one of the below listed options to issue object related actions',
-    determine_serviceicon($service_object),
-    'yes',
-    ''
-  );
-
-  // ACKNOWLEDGE service problem
-  if ($service_object->state != 0 and $service_object->acknowledged == 0) {
-    $w->result(
-      '',
-      '',
-      'Acknowledge service problem',
-      '',
-      'icon.png',
-      'no',
-      'ack_svc:' . $substr
-    );
-  }
-
-  echo $w->toxml();
-
-} else if ( is_string($substr = check_args_prefix('servicegroup:', $inQuery)) ) {
-
-  // work for host: servicegroup
-  $filter = '[servicegroups] name = "' . $substr . '"';
-  $fetch_result = fetch_op5_api($filter, url_columns('servicegroups'));
-  $servicegroup_object = $fetch_result[0];
-
-  $w->result(
-    '',
-    'url: ' . build_object_url('servicegroup: ' . $substr),
-    'Servicegroup: ' . $substr,
-    'choose from one of the below listed options to issue object related actions',
-    determine_servicegroupicon($servicegroup_object),
-    'yes',
-    ''
-  );
-
-  // ACKNOWLEDGE all service problems in service group 
-  if ($servicegroup_object->worst_service_state != 0) {
-    $inner_filter = '[services] groups >= "' . $substr . '" and state != 0 and acknowledged = 0';
-    $fetch_result = fetch_op5_api($inner_filter, url_columns('services'));
-    if (count($fetch_result)) {
-      $w->result(
-        '',
-        '',
-        'Acknowledge all service problems in this service group',
-        '',
-        'icon.png',
-        'no',
-        'ack_svcgrp:' . $substr
-      );
-    }
-  }
-
-  echo $w->toxml();
-
-} else {
-
-  $w->result(
-    '',
-    '',
-    'Error! No arguments given',
-    'this workflow is intented to be used by the op5 Monitor query module only',
-    'icon.png',
-    'no',
-    ''
-  );
-  echo $w->toxml();
-  exit;
+  list($svcgroupname, $comment) = explode(':', $substr);
+  $output = acknowledge_svcgroup($svcgroupname, $comment); 
+  echo "Acknowledged " . $output . " services with comment " .$comment. "\n";
 
 }
-
-
 ?>
