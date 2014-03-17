@@ -77,5 +77,26 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
   $output = acknowledge_svcgroup($svcgroupname, $comment); 
   echo "Acknowledged " . $output . " services with comment " .$comment. "\n";
 
+} else if ( is_string($substr = check_args_prefix('recheck_host:', $inQuery)) ) {
+
+  $output = reschedule_host_with_services($substr);
+  echo "Re-Scheduled 1 host and " . $output . " services for recheck\n";
+
+} else if ( is_string($substr = check_args_prefix('recheck_hg:', $inQuery)) ) {
+
+  $output = reschedule_hostgroup($substr);
+  echo "Re-Scheduled " . $output[0] . " hosts and " . $output[1] . " services for recheck\n";
+  
+} else if ( is_string($substr = check_args_prefix('recheck_svc:', $inQuery)) ) {
+
+  list($service_host, $service_description) = explode(';', $substr);
+  reschedule_service($service_host, $service_description);
+  echo "Re-Scheduled 1 service for recheck\n";
+  
+} else if ( is_string($substr = check_args_prefix('recheck_svcgrp:', $inQuery)) ) {
+
+  $output = reschedule_svcgrp($substr);
+  echo "Re-Scheduled " . $output . " services for recheck\n";
+  
 }
 ?>

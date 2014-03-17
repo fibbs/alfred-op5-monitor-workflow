@@ -618,4 +618,74 @@ function acknowledge_svcgroup($groupname, $comment) {
 
   return $counter;
 }
+
+function reschedule_host($hostname) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/SCHEDULE_HOST_CHECK';
+
+  $data = json_encode(array(
+    "host_name"   =>      $hostname,
+    "check_time"     =>   time()
+    )
+  );
+
+  return put_op5_api($url, $data);
+}
+
+function reschedule_service($hostname, $servicedescription) {
+  global $api_hostname;
+  $url = 'https://' . $api_hostname . '/api/command/SCHEDULE_SVC_CHECK';
+
+  $data = json_encode(array(
+    "host_name"           =>      $hostname,
+    "service_description" =>      $servicedescription,
+    "check_time"          =>      time()
+    )
+  );
+
+  return put_op5_api($url, $data);
+}
+
+function reschedule_host_with_services($hostname) {
+  reschedule_host($hostname);
+
+  $filter = '[services] host.name = "' . $hostname . '" and active_checks_enabled = 1';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    reschedule_service($hostname, $service->description);
+    $counter++;
+  }
+
+  return $counter;
+}
+
+function reschedule_hostgroup($hostgroupname) {
+  $filter = '[hosts] groups >= "' . $hostgroupname . '"';
+  $fetch_result = fetch_op5_api($filter, url_columns('hosts'));
+
+  $hostcounter = 0;
+  $servicecounter = 0;
+  foreach ($fetch_result as $host) {
+    $nr_of_svc = reschedule_host_with_services($host->name);
+    $servicecounter = $servicecounter + $nr_of_svc;
+    $hostcounter++;
+  }
+
+  return array($hostcounter, $servicecounter);
+}
+
+function reschedule_svcgrp($groupname) {
+  $filter = '[services] groups >= "' . $groupname . '" and active_checks_enabled = 1';
+  $fetch_result = fetch_op5_api($filter, url_columns('services'));
+
+  $counter = 0;
+  foreach ($fetch_result as $service) {
+    reschedule_service($service->host->name, $service->description);
+    $counter++;
+  }
+
+  return $counter;
+}
 ?>

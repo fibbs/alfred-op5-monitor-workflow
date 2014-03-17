@@ -221,6 +221,11 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
   echo $w->toxml();
   exit;
 
+
+/*
+  BEGINNING FROM HERE THE 'ACTIONS' PART OF THE ALFRED APP SELECTION BEGINS
+*/
+
 } else if ( is_string($substr = check_args_prefix('host:', $inQuery)) ) {
 
   // work for host: prefix
@@ -267,6 +272,18 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
       );
     }
   }
+
+  //RESCHEDULE / RECHECK
+  $w->result(
+    '',
+    'recheck_host:' . $substr,
+    'Re-check host and all services NOW',
+    '',
+    'icon.png',
+    'yes',
+    ''
+  );
+
 
   echo $w->toxml();
 
@@ -320,6 +337,18 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
       );
     }
   }
+
+  //RESCHEDULE / RECHECK
+  $w->result(
+    '',
+    'recheck_hg:' . $substr,
+    'Re-check all hosts and services in this group NOW',
+    '',
+    'icon.png',
+    'yes',
+    ''
+  );
+
   echo $w->toxml();
 
 } else if ( is_string($substr = check_args_prefix('service:', $inQuery)) ) {
@@ -352,6 +381,17 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
       'ack_svc:' . $substr . ':'
     );
   }
+
+  //RESCHEDULE / RECHECK
+  $w->result(
+    '',
+    'recheck_svc:' . $substr,
+    'Re-check service NOW',
+    '',
+    'icon.png',
+    'yes',
+    ''
+  );
 
   echo $w->toxml();
 
@@ -388,6 +428,17 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
       );
     }
   }
+
+  //RESCHEDULE / RECHECK
+  $w->result(
+    '',
+    'recheck_svcgrp:' . $substr,
+    'Re-check all services in this group NOW',
+    '',
+    'icon.png',
+    'yes',
+    ''
+  );
 
   echo $w->toxml();
 
