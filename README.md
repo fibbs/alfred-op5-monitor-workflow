@@ -60,9 +60,9 @@ existing.
 Additionally, you can add a `!` before the search query to negate the
 search query:
 
-- `mon g:!host`
+- `mon h:!host`
 
-This example will show all host groups that do not contain the word
+This example will show all hosts that do not contain the word
 "host" in their names and aliases.
 
 ![alt text][op5-workflow-img006]
