@@ -144,4 +144,5 @@ euros for it, I will not stop you from doing so.
 [op5-workflow-img006]: ./screenshots/op5-workflow-006.png "Negating a filter"
 [op5-workflow-img007]: ./screenshots/op5-workflow-007.png "only show objects that have problems"
 [op5-workflow-img008]: ./screenshots/op5-workflow-008.png "Enter a filter directly"
+[op5-workflow-img009]: ./screenshots/op5-workflow-009.png "actions module"
 [op5-workflow-img010]: ./screenshots/op5-workflow-009.png "Configuration"
