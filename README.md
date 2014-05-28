@@ -1,7 +1,7 @@
 op5 Monitor ([Download v0.2.3](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
 ==============================
 
-Alfred 2 workflow for the commercial Nagios-based network monitoring
+This is an Alfred 2 workflow for the commercial Nagios-based network monitoring
 solution *op5 Monitor* developed and sold by the swedish company ([op5](http://op5.com)).
 
 ## Requirements
