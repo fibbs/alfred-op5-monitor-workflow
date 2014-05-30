@@ -1,7 +1,7 @@
-op5 Monitor ([Download v0.2.3](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
+op5 Monitor ([Download v0.2.4](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
 ==============================
 
-Alfred 2 workflow for the commercial Nagios-based network monitoring
+This is an Alfred 2 workflow for the commercial Nagios-based network monitoring
 solution *op5 Monitor* developed and sold by the swedish company ([op5](http://op5.com)).
 
 ## Requirements
@@ -129,9 +129,11 @@ More information on this feature and an explanation on how to enable it in your 
 - `op5actions`
 
 ## Donate
-This software is free and published under the MIT license. I have created this workflow mainly for myself and thought it could be useful for some others out there. If this workflow is as useful for you as it is for me, and you feel the need to drop me some cents or euros for it, I will not stop you from doing so. Use the following link to donate via PayPal.
+This software is free and published under the MIT license. I have created this workflow mainly for myself and thought it could be useful for some others out there. If this workflow is as useful for you as it is for me, and you feel the need to drop me some cents or euros for it, I will not stop you from doing so. Use the following link to donate via PayPal or Flattr.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32WRFW8GBHLWJ)
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=fibbsanton&url=https://github.com/fibbs/alfred-op5-monitor-workflow&title=alfred-op5-monitor-workflow&language=en&tags=github&category=software)
 
 ## Follow
 I seldom write something on Twitter, but I am there. You can find me with the username ([@fibbsanton](https://twitter.com/fibbsanton)).
