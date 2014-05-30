@@ -133,7 +133,7 @@ This software is free and published under the MIT license. I have created this w
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32WRFW8GBHLWJ)
 
-<script id='fb009a9'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=fibbsanton&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb009a9');</script>
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=fibbsanton&url=https://github.com/fibbs/alfred-op5-monitor-workflow&title=alfred-op5-monitor-workflow&language=en&tags=github&category=software)
 
 ## Follow
 I seldom write something on Twitter, but I am there. You can find me with the username ([@fibbsanton](https://twitter.com/fibbsanton)).
