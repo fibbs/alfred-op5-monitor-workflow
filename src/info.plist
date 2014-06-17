@@ -30,17 +30,6 @@
 				<string></string>
 			</dict>
 		</array>
-		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>F59FE0A1-294B-4A3A-A459-ECFE014A7518</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
 		<key>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</key>
 		<array>
 			<dict>
@@ -107,6 +96,31 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>script</key>
@@ -120,31 +134,6 @@ open $MYURL</string>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>0D64AC76-3D3B-466B-9F59-96ED7E6B9F17</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>0</integer>
-				<key>hotkey</key>
-				<integer>46</integer>
-				<key>hotmod</key>
-				<integer>1179648</integer>
-				<key>hotstring</key>
-				<string>M</string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -199,33 +188,6 @@ end tell</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>3</integer>
-				<key>argumenttext</key>
-				<string>m:zahnarztpraxis-gall</string>
-				<key>hotkey</key>
-				<integer>5</integer>
-				<key>hotmod</key>
-				<integer>1179648</integer>
-				<key>hotstring</key>
-				<string>G</string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>ADF2E946-4EE7-43E0-9661-429910E6A97C</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>lastpathcomponent</key>
 				<false/>
 				<key>onlyshowifquerypopulated</key>
@@ -245,6 +207,31 @@ end tell</string>
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>822E00E3-35D7-44B5-AA36-314B6F2C9572</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>script</key>
+				<string>OUTPUT="{query}"
+
+if echo $OUTPUT | grep -qe "^url: "; then
+	URL=$(echo $OUTPUT | sed -e "s/^url: //")
+	#DEBUG echo $URL &gt;~/tmp/url
+	open $URL
+else
+	php -f op5actions_execute.php "{query}"
+fi</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>AAA92C6E-F5E1-48BD-87C8-2780A6BF26CF</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -281,22 +268,14 @@ end tell</string>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>script</key>
-				<string>OUTPUT="{query}"
-
-if echo $OUTPUT | grep -qe "^url: "; then
-	URL=$(echo $OUTPUT | sed -e "s/^url: //")
-	#DEBUG echo $URL &gt;~/tmp/url
-	open $URL
-else
-	php -f op5actions_execute.php "{query}"
-fi</string>
+				<string>php -f plist_set.php {query}</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>AAA92C6E-F5E1-48BD-87C8-2780A6BF26CF</string>
+			<string>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -354,23 +333,6 @@ fi</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>4</integer>
-				<key>script</key>
-				<string>php -f plist_set.php {query}</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -400,11 +362,6 @@ fi</string>
 		<dict>
 			<key>ypos</key>
 			<real>250</real>
-		</dict>
-		<key>ADF2E946-4EE7-43E0-9661-429910E6A97C</key>
-		<dict>
-			<key>ypos</key>
-			<real>130</real>
 		</dict>
 		<key>CA432C7E-C084-4C8F-9ABE-DB5BE92D0049</key>
 		<dict>
