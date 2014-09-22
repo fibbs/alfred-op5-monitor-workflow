@@ -372,17 +372,23 @@ function set_url_filter() {
 
     list($is_filtered, $substr) = check_filter_problems_only($substr);
 
+    if ($is_filtered) {
+      $statusfilter = ' and state != 0';
+    } else {
+      $statusfilter = '';
+    }
+
     if (empty($substr)) {
 
-      return '[notifications] all';
+      return '[notifications] all' . $statusfilter;
 
     } else {
 
       if (strpos($substr, '!') === 0) {
         $substr = substr($substr, 1,  strlen($substr)-1);
-        return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"';
+        return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"' . $statusfilter;
       } else {
-        return '[notifications] host_name ~~ "'.$substr.'" or service_description ~~ "'.$substr.'" or output ~~ "' . $substr . '"';
+        return '[notifications] host_name ~~ "'.$substr.'" or service_description ~~ "'.$substr.'" or output ~~ "' . $substr . '"' . $statusfilter;
       }
 
     }
