@@ -51,6 +51,21 @@ if ($opmode == "sethostname") {
     print 'error setting HTTP GET authentication to ' . $entry;
   }
 
+} else if ($opmode == "setnotificationfilter") {
+
+  $w->set('notification_filter_contact', $entry, $config_plist);
+
+  if ($w->get('notification_filter_contact', $config_plist) == $entry) {
+    if ($entry == "") {
+      print 'successfully set contact filter to be empty';
+    } else {
+      print 'successfully set contact filter to ' . $entry;
+    }
+  } else {
+    print 'error setting contact filter ' . $entry;
+  }
+
+
 } else {
 
   print "something went terribly wrong";

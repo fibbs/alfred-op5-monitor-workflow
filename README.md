@@ -1,4 +1,4 @@
-op5 Monitor ([Download v0.2.5](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
+op5 Monitor ([Download v0.3.0](https://github.com/fibbs/alfred-op5-monitor-workflow/raw/master/op5Monitor-workflow.alfredworkflow))
 ==============================
 
 This is an Alfred 2 workflow for the commercial Nagios-based network monitoring
@@ -7,13 +7,7 @@ solution *op5 Monitor* developed and sold by the swedish company ([op5](http://o
 ## Requirements
 1. Alfred App v. 2
 1. Alfred Powerpack
-1. op5 Monitor v. 6.3 or higher (currently not released yet)
-
-**BIG FAT WARNING**
-The required version of op5 Monitor that is needed for this Alfred
-workflow to work is not yet released. You may contact me if you are
-interested in helping me testing this workflow!
-op5 Monitor is planned to be released within the second quarter of 2014.
+1. op5 Monitor v. 7.0 or higher
 
 ## Installing
 1. Click the download buttons on the top of this page
@@ -42,6 +36,7 @@ one of the following options:
 - `g:` for host groups,
 - `G:` for service groups and
 - `f:` or `+` for saved filters
+- `n:` for notifications
 
 ![alt text][op5-workflow-img003]
 ![alt text][op5-workflow-img004]
@@ -106,6 +101,8 @@ This module offers several actions depending on the object type, the state and o
 - Depending on if the specific object has performance graphs (only applicable to host and service objects), an option that takes you directly to the page with the performance graphs will be shown.
 - Depending on the type and the state of the object and the objects belonging to it, options that allows you to ACKNOWLEDGE one or several host/service problems at the same time are displayed. The ACKNOWLEDGE will be executed after you supplied an acknowledgement comment. You can acknowledge a single host problem and all this host's service problems at the same time, or all service problems on OK hosts within a whole host group and much more.
 - For all host, hostgroup, service and servicegroup object, a re-check option is displayed. This option allows you to send op5 Monitor a command to re-check objects immediately in order to update their state. There are options to re-check many objects at the same time, such as "all services belonging to a specific host" or "all hosts and their services belonging to a certain host group".
+- For hosts and services, "Notifications" and eventually "Notifications for Host" options will be displayed. With these, you can directly jump into a list of all notifications
+for the specific object.
 
 ## Configuration module
 By calling the workflow with the `monconf` command you will be presented
@@ -115,6 +112,7 @@ with the options to configure the following necessary values:
 - username for op5 Monitor login
 - password
 - op5 Monitor "HTTP GET authentication"
+- Filter notifications by contact name
 
 ![alt text][op5-workflow-img010]
 
@@ -122,6 +120,9 @@ with the options to configure the following necessary values:
 op5 Monitor supports HTTP GET authentication so you can authenticate to your op5 Monitor Web UI without being presented a login prompt, just by submitting the username and password within the URL using GET parameters. Note: Authenticating using GET parameters can be a security risk, since the username and password will be part of the URL and therefore can be exposed in various places such as the address bar of the web browser, web server log files and saved bookmarks.
 
 More information on this feature and an explanation on how to enable it in your op5 Monitor installation can be found ([here](https://kb.op5.com/display/HOWTOs/Fetching+CSV+reports+over+HTTP)) in the op5 Knowledge Base.
+
+### Filtering notifications by contact name
+When displaying lists of notifications, the same notification may be displayed several times, because each contact that receives notifications for a certain object is listed as one separate notification. In order to not see duplicated notifications, you can specify to additionally filter the notifications displayed by contact name. This contact name may be the login name for the user that uses this workflow, but depending on your monitoring configuration you might also have a different contact name that you want to use for filtering.
 
 ## Commands
 - `mon {query}`

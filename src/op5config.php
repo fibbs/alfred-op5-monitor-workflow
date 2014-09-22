@@ -86,6 +86,21 @@ if ($opmode == "sethostname") {
 
   echo $w->toxml();
 
+} else if ($opmode == "setnotificationfilter") {
+
+  $w->result(
+    '', 
+    $opmode . ' ' . $entry, 
+    'Set contact name to filter notifications', 
+    'type contact name and hit enter', 
+    'icon.png', 
+    'yes', 
+    '' 
+  );
+
+  echo $w->toxml();
+
+
 } else if (empty($opmode)) {
 
   // try to read the settings.plist
@@ -111,6 +126,12 @@ if ($opmode == "sethostname") {
     $get_authentication_text = 'HTTP GET authentication is enabled';
   } else {
     $get_authentication_text = 'HTTP GET authentication is disabled';
+  }
+
+  if ($notification_filter_contact = $w->get('notification_filter_contact', $config_plist)) {
+    $notification_filter_contact_text = 'filter is set to "' . $notification_filter_contact . '"';
+  } else {
+    $notification_filter_contact_text = 'filter is not set';
   }
 
   $w->result(
@@ -151,6 +172,16 @@ if ($opmode == "sethostname") {
     'icon.png',
     'no',
     'setgetauth '
+  );
+
+  $w->result(
+    '',
+    '',
+    'Filter notifications by contact name',
+    $notification_filter_contact_text,
+    'icon.png',
+    'no',
+    'setnotificationfilter '
   );
 
   echo $w->toxml();

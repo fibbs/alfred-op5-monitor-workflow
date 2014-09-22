@@ -86,6 +86,17 @@ function url_columns ($opmode) {
       'num_services_unknown',
       'worst_service_state'
     );
+  } else if ($opmode == "notifications") {
+    $columns = array(
+      'notification_type',
+      'start_time',
+      'end_time',
+      'contact_name',
+      'host_name',
+      'service_description',
+      'state',
+      'output'
+    );
   }
 
   return implode(',', $columns);
@@ -213,6 +224,7 @@ function set_url_filter() {
   global $inQuery;
   global $w;
   global $config_plist;
+  global $notification_filter_contact;
 
   if ( is_string($substr = check_args_prefix('s:', $inQuery)) ) {
 
@@ -357,6 +369,69 @@ function set_url_filter() {
 
     }
 
+  } else if ( is_string($substr = check_args_prefix('n:', $inQuery)) ) {
+
+    list($is_filtered, $substr) = check_filter_problems_only($substr);
+
+    if ($is_filtered) {
+      $statusfilter = ' and state != 0';
+    } else {
+      $statusfilter = '';
+    }
+
+    if (is_string($notification_filter_contact) and $notification_filter_contact != "") {
+      $contactfilter = ' and contact_name = "' . $notification_filter_contact . '"';
+    } else {
+      $contactfilter = '';
+    }
+
+    if (empty($substr)) {
+
+      return '[notifications] all' . $statusfilter . $contactfilter;
+
+    } else {
+
+      list($filter_hostpart, $filter_servicepart) = explode(";", $substr);
+
+      if (empty($filter_servicepart)) {
+
+        if (strpos($filter_hostpart, '!') === 0) {
+          $filter_hostpart = substr($filter_hostpart, 1,  strlen($filter_hostpart)-1);
+          return '[notifications] host_name !~~ "'.$filter_hostpart.'"' . $statusfilter . $contactfilter;
+        } else {
+          return '[notifications] host_name ~~ "'.$filter_hostpart.'"' . $statusfilter . $contactfilter;
+        }
+
+      } else {
+
+        if (strpos($filter_hostpart, '!') === 0) {
+          $filter_hostpart = substr($filter_hostpart, 1,  strlen($filter_hostpart)-1);
+          $hostfilter = 'host_name !~~ "'.$filter_hostpart.'"';
+        } else {
+          $hostfilter = 'host_name ~~ "'.$filter_hostpart.'"';
+        }
+
+        if (strpos($filter_servicepart, '!') === 0) {
+          $filter_servicepart = substr($filter_servicepart, 1, strlen($filter_servicepart)-1);
+          $servicefilter = 'service_description !~~ "'.$filter_servicepart.'"';
+        } else {
+          $servicefilter = 'service_description ~~ "'.$filter_servicepart.'"';
+        }
+
+        return '[notifications] ' . $hostfilter . ' and ' . $servicefilter . $statusfilter . $contactfilter;
+
+      }
+
+
+      if (strpos($substr, '!') === 0) {
+        $substr = substr($substr, 1,  strlen($substr)-1);
+        return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"' . $statusfilter . $contactfilter;
+      } else {
+        return '[notifications] (host_name ~~ "'.$substr.'" or service_description ~~ "'.$substr.'" or output ~~ "' . $substr . '")' . $statusfilter . $contactfilter;
+      }
+
+    }
+
   } else if ( is_string($substr = check_args_prefix('F:',$inQuery)) or is_string($substr = check_args_prefix('\'',$inQuery)) ) {
 
     return $substr;
@@ -456,6 +531,26 @@ function build_object_url($query) {
       $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
     }
 
+  } else if ( is_string($objectname = check_args_prefix('svcnotif:', $query)) ) {
+
+    list( $hostname, $servicename ) = explode(";", $objectname);
+    $filter = '[notifications] host_name ~~ "'.$hostname.'" and service_description ~~ "'.$servicename.'"';
+    $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
+
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
+  } else if ( is_string($objectname = check_args_prefix('hostnotif:', $query)) ) {
+
+    $filter = '[notifications] host_name ~~ "'.$objectname.'"';
+    $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
+
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
+
   } else {
 
     $url = 'https://'.$api_hostname.'/monitor/index.php/tac/index';
@@ -536,6 +631,21 @@ function determine_servicegroupicon($servicegroup_object) {
   } else {
     return 'icons/servicestatus-4.png';
   }
+}
+
+function determine_notificationsicon($notification_object) {
+  if ($notification_object->notification_type == 0) {
+    # host notification
+    if ($notification_object->state == 1) {
+      $state = 2;
+    } else {
+      $state = $notification_object->state;
+    }
+  } else {
+    # all other notification types
+    $state = $notification_object->state;
+  }
+  return 'icons/servicestatus-' . $state . '.png';
 }
 
 function acknowledge_host($hostname, $comment) {
