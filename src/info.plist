@@ -228,8 +228,8 @@ open $MYURL</string>
 end replace_chars
 
 set MyQuery to "op5actions {query}"
-set MyQuery to replace_chars(MyQuery, "op5actions svcnotif: ", "mon s: ")
-set MyQuery to replace_chars(MyQuery, "op5actions hostnotif: ", "mon h: ")
+set MyQuery to replace_chars(MyQuery, "op5actions svcnotif:", "mon s:")
+set MyQuery to replace_chars(MyQuery, "op5actions hostnotif:", "mon h:")
 
 log MyQuery
 

@@ -395,17 +395,17 @@ if ($opmode == "hosts") {
     if ($notification->notification_type == 1) {
       # service notification
       $title_output = "Service: " . $notification->host_name . " / " . $notification->service_description;
-      $notificationsarg = 'svcnotif: ' . $notification->host_name . ";" . $notification->service_description;
+      $notificationsarg = 'svcnotif:' . $notification->host_name . ";" . $notification->service_description;
     } else if ($notification->notification_type == 0) {
       # host notification
       $title_output = "Host: " . $notification->host_name;
-      $notificationsarg = 'hostnotif: ' . $notification->host_name;
+      $notificationsarg = 'hostnotif:' . $notification->host_name;
     } else {
       $title_output = "Type: " . $notification->notification_type . ", " . $notification->host_name;
       if ($notification->service_description != "") {
         $title_output .= " / " . $notification->service_description;
       }
-      $notificationsarg = 'hostnotif: ' . $notification->host_name;
+      $notificationsarg = 'hostnotif:' . $notification->host_name;
     }
 
     $w->result(
