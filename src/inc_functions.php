@@ -499,14 +499,25 @@ function build_object_url($query) {
       $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
     }
 
-  } else if ( is_string($querystring = check_args_prefix('notifications:', $query)) ) {
+  } else if ( is_string($objectname = check_args_prefix('svcnotif:', $query)) ) {
 
-    $filter = '[notifications] host_name ~~ "'.$querystring.'" or service_description ~~ "'.$querystring.'" or output ~~ "' . $querystring . '"';
+    list( $hostname, $servicename ) = explode(";", $objectname);
+    $filter = '[notifications] host_name ~~ "'.$hostname.'" and service_description ~~ "'.$servicename.'"';
     $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
 
     if ($get_authentication) {
       $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
     }
+
+  } else if ( is_string($objectname = check_args_prefix('hostnotif:', $query)) ) {
+
+    $filter = '[notifications] host_name ~~ "'.$objectname.'"';
+    $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
+
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
 
   } else {
 
