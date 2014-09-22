@@ -255,6 +255,16 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
     );
   }
 
+  $w->result(
+    '',
+    'hostnotifications: ' . $substr,
+    'Notifications',
+    'See notifications for the host',
+    'icon.png',
+    'yes',
+    ''
+  );
+
   // ACKNOWLEDGE host problem
   if ($host_object->state != 0 and $host_object->acknowledged == 0) {
     $w->result(
@@ -392,6 +402,26 @@ if ( is_string($substr = check_args_prefix('ack_host:', $inQuery)) ) {
       ''
     );
   }
+
+  $w->result(
+    '',
+    'svcnotifications: ' . $myhost . ';' . $myservice,
+    'Notifications',
+    'See notifications for this service',
+    'icon.png',
+    'yes',
+    ''
+  );
+
+  $w->result(
+    '',
+    'hostnotifications: ' . $myhost,
+    'Notifications for host ' . $myhost,
+    'See notifications for the host of this service',
+    'icon.png',
+    'yes',
+    ''
+  );
 
   // ACKNOWLEDGE service problem
   if ($service_object->state != 0 and $service_object->acknowledged == 0) {
