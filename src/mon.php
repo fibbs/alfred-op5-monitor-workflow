@@ -97,6 +97,15 @@ if (empty($inQuery)) {
   $w->result(
     '',
     '',
+    'Notifications Query',
+    'Query op5 Monitor for sent notifications',
+    'icon.png',
+    'no',
+    'n:'
+  );
+  $w->result(
+    '',
+    '',
     'Saved Filters Query',
     'Query op5 Monitor for saved filters',
     'icon.png',
@@ -364,6 +373,55 @@ if ($opmode == "hosts") {
       'none', 
       'No Filters Found', 
       'No saved filters matching your query were found', 
+      'icon.png', 
+      'no', 
+      '' 
+    );
+    echo $w->toxml();
+    exit;
+  }
+
+} else if ($opmode == "notifications") {
+
+  $result = fetch_op5_api($url_filter, url_columns($opmode));
+
+  foreach ( $result as $notification ) {
+
+    // ########################## here's the magic
+
+    $time_since = time_since(time() - $notification->start_time);
+
+    if ($notification->notification_type == 1) {
+      # service notification
+      $title_output = "Service: " . $notification->host_name . " / " . $notification->service_description;
+    } else if ($notification->notification_type == 0) {
+      # host notification
+      $title_output = "Host: " . $notification->host_name;
+    } else {
+      $title_output = "Type: " . $notification->notification_type . ", " . $notification->host_name;
+      if ($notification->service_description != "") {
+        $title_output .= " / " . $notification->service_description;
+      }
+    }
+
+    $w->result(
+      '', 
+      'notifications: ' . preg_replace('/^n:/', "", $inQuery), 
+      $title_output, 
+      $time_since . " ago: " . $notification->output, 
+      determine_notificationsicon($notification), 
+      'yes', 
+      ''
+    );
+
+  }
+
+  if (!count($result)) {
+    $w->result(
+      '', 
+      'none', 
+      'No notifications found', 
+      'No notifications that match your query found', 
       'icon.png', 
       'no', 
       '' 

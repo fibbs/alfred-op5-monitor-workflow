@@ -86,6 +86,17 @@ function url_columns ($opmode) {
       'num_services_unknown',
       'worst_service_state'
     );
+  } else if ($opmode == "notifications") {
+    $columns = array(
+      'notification_type',
+      'start_time',
+      'end_time',
+      'contact_name',
+      'host_name',
+      'service_description',
+      'state',
+      'output'
+    );
   }
 
   return implode(',', $columns);
@@ -357,6 +368,25 @@ function set_url_filter() {
 
     }
 
+  } else if ( is_string($substr = check_args_prefix('n:', $inQuery)) ) {
+
+    list($is_filtered, $substr) = check_filter_problems_only($substr);
+
+    if (empty($substr)) {
+
+      return '[notifications] all';
+
+    } else {
+
+      if (strpos($substr, '!') === 0) {
+        $substr = substr($substr, 1,  strlen($substr)-1);
+        return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"';
+      } else {
+        return '[notifications] host_name ~~ "'.$substr.'" or service_description ~~ "'.$substr.'" or output ~~ "' . $substr . '"';
+      }
+
+    }
+
   } else if ( is_string($substr = check_args_prefix('F:',$inQuery)) or is_string($substr = check_args_prefix('\'',$inQuery)) ) {
 
     return $substr;
@@ -456,6 +486,15 @@ function build_object_url($query) {
       $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
     }
 
+  } else if ( is_string($querystring = check_args_prefix('notifications:', $query)) ) {
+
+    $filter = '[notifications] host_name ~~ "'.$querystring.'" or service_description ~~ "'.$querystring.'" or output ~~ "' . $querystring . '"';
+    $url = 'https://'.$api_hostname.'/monitor/index.php/listview?q=' . urlencode($filter);
+
+    if ($get_authentication) {
+      $url = $url . "&username=".urlencode($username)."&password=".urlencode($password);
+    }
+
   } else {
 
     $url = 'https://'.$api_hostname.'/monitor/index.php/tac/index';
@@ -536,6 +575,21 @@ function determine_servicegroupicon($servicegroup_object) {
   } else {
     return 'icons/servicestatus-4.png';
   }
+}
+
+function determine_notificationsicon($notification_object) {
+  if ($notification_object->notification_type == 0) {
+    # host notification
+    if ($notification_object->state == 1) {
+      $state = 2;
+    } else {
+      $state = $notification_object->state;
+    }
+  } else {
+    # all other notification types
+    $state = $notification_object->state;
+  }
+  return 'icons/servicestatus-' . $state . '.png';
 }
 
 function acknowledge_host($hostname, $comment) {
