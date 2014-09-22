@@ -391,6 +391,38 @@ function set_url_filter() {
 
     } else {
 
+      list($filter_hostpart, $filter_servicepart) = explode(";", $substr);
+
+      if (empty($filter_servicepart)) {
+
+        if (strpos($filter_hostpart, '!') === 0) {
+          $filter_hostpart = substr($filter_hostpart, 1,  strlen($filter_hostpart)-1);
+          return '[notifications] host_name !~~ "'.$filter_hostpart.'"' . $statusfilter . $contactfilter;
+        } else {
+          return '[notifications] host_name ~~ "'.$filter_hostpart.'"' . $statusfilter . $contactfilter;
+        }
+
+      } else {
+
+        if (strpos($filter_hostpart, '!') === 0) {
+          $filter_hostpart = substr($filter_hostpart, 1,  strlen($filter_hostpart)-1);
+          $hostfilter = 'host_name !~~ "'.$filter_hostpart.'"';
+        } else {
+          $hostfilter = 'host_name ~~ "'.$filter_hostpart.'"';
+        }
+
+        if (strpos($filter_servicepart, '!') === 0) {
+          $filter_servicepart = substr($filter_servicepart, 1, strlen($filter_servicepart)-1);
+          $servicefilter = 'service_description !~~ "'.$filter_servicepart.'"';
+        } else {
+          $servicefilter = 'service_description ~~ "'.$filter_servicepart.'"';
+        }
+
+        return '[notifications] ' . $hostfilter . ' and ' . $servicefilter . $statusfilter . $contactfilter;
+
+      }
+
+
       if (strpos($substr, '!') === 0) {
         $substr = substr($substr, 1,  strlen($substr)-1);
         return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"' . $statusfilter . $contactfilter;
