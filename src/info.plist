@@ -258,6 +258,14 @@ if echo $OUTPUT | grep -qe "^url: "; then
 	URL=$(echo $OUTPUT | sed -e "s/^url: //")
 	#DEBUG echo $URL &gt;~/tmp/url
 	open $URL
+elif echo $OUTPUT | grep -qe "^hostnotifications: "; then
+	MYHOST=$(echo $OUTPUT|sed -e "s/^hostnotifications: //")
+	osascript -e "tell application \"Alfred 2\" to search \"mon n:$MYHOST\""
+elif echo $OUTPUT | grep -qe "^svcnotifications: "; then
+	MYQUERY=$(echo $OUTPUT|sed -e "s/^svcnotifications: //")
+	MYHOST=$(echo $MYQUERY|cut -f1 -d:)
+	MYSVC=$(echo $MYQUERY|cut -f2 -d:)
+	osascript -e "tell application \"Alfred 2\" to search \"mon n:$MYHOST;$MYSVC\""
 else
 	php -f op5actions_execute.php "{query}"
 fi</string>
