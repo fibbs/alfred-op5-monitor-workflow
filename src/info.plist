@@ -41,28 +41,6 @@
 				<string></string>
 			</dict>
 		</array>
-		<key>CFE7837E-EF4E-4B80-9714-D6E38A1D5C4E</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>F59FE0A1-294B-4A3A-A459-ECFE014A7518</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
-		<key>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>F59FE0A1-294B-4A3A-A459-ECFE014A7518</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
 		<key>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</key>
 		<array>
 			<dict>
@@ -99,7 +77,7 @@
 	<key>createdby</key>
 	<string>Christian Anton &lt;canton@op5.com&gt;</string>
 	<key>description</key>
-	<string>Request states of your IT components and services from op5 Monitor (v0.2.5)</string>
+	<string>Request states of your IT components and services from op5 Monitor (v0.3.0)</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -124,35 +102,6 @@ open $MYURL</string>
 			<string>0D64AC76-3D3B-466B-9F59-96ED7E6B9F17</string>
 			<key>version</key>
 			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>3</integer>
-				<key>argumenttext</key>
-				<string>m:zahnarztpraxis-gall</string>
-				<key>hotkey</key>
-				<integer>5</integer>
-				<key>hotmod</key>
-				<integer>1179648</integer>
-				<key>hotstring</key>
-				<string>G</string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-				<key>relatedAppsMode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</string>
-			<key>version</key>
-			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -186,35 +135,6 @@ open $MYURL</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>3</integer>
-				<key>argumenttext</key>
-				<string>'[hosts] (state != 0 or worst_service_state != 0) and name !~~ "^fibbs" and name !~~ "^rpproxy"</string>
-				<key>hotkey</key>
-				<integer>46</integer>
-				<key>hotmod</key>
-				<integer>1179648</integer>
-				<key>hotstring</key>
-				<string>M</string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-				<key>relatedAppsMode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>CFE7837E-EF4E-4B80-9714-D6E38A1D5C4E</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>script</key>
@@ -243,6 +163,31 @@ end tell</string>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>FFAA5375-0853-40EA-A561-2CD4F0D2389C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>op5 Monitor Action</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>822E00E3-35D7-44B5-AA36-314B6F2C9572</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -309,25 +254,17 @@ fi</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>output</key>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>script</key>
+				<string>php -f plist_set.php {query}</string>
+				<key>type</key>
 				<integer>0</integer>
-				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
-				<false/>
-				<key>text</key>
-				<string>{query}</string>
-				<key>title</key>
-				<string>op5 Monitor Action</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>822E00E3-35D7-44B5-AA36-314B6F2C9572</string>
+			<string>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -385,23 +322,6 @@ fi</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>4</integer>
-				<key>script</key>
-				<string>php -f plist_set.php {query}</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -436,16 +356,6 @@ fi</string>
 		<dict>
 			<key>ypos</key>
 			<real>250</real>
-		</dict>
-		<key>CFE7837E-EF4E-4B80-9714-D6E38A1D5C4E</key>
-		<dict>
-			<key>ypos</key>
-			<real>130</real>
-		</dict>
-		<key>E1ECF9A4-A890-4480-B5F7-86D25FCB3030</key>
-		<dict>
-			<key>ypos</key>
-			<real>10</real>
 		</dict>
 		<key>EFF3BF3D-0B86-40FA-A28B-972A899EE81E</key>
 		<dict>
