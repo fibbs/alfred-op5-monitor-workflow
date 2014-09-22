@@ -224,6 +224,7 @@ function set_url_filter() {
   global $inQuery;
   global $w;
   global $config_plist;
+  global $notification_filter_contact;
 
   if ( is_string($substr = check_args_prefix('s:', $inQuery)) ) {
 
@@ -378,17 +379,23 @@ function set_url_filter() {
       $statusfilter = '';
     }
 
+    if (is_string($notification_filter_contact) and $notification_filter_contact != "") {
+      $contactfilter = ' and contact_name = "' . $notification_filter_contact . '"';
+    } else {
+      $contactfilter = '';
+    }
+
     if (empty($substr)) {
 
-      return '[notifications] all' . $statusfilter;
+      return '[notifications] all' . $statusfilter . $contactfilter;
 
     } else {
 
       if (strpos($substr, '!') === 0) {
         $substr = substr($substr, 1,  strlen($substr)-1);
-        return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"' . $statusfilter;
+        return '[notifications] host_name !~~ "'.$substr.'" and service_description !~~ "'.$substr . '" and output !~~ "'.$substr . '"' . $statusfilter . $contactfilter;
       } else {
-        return '[notifications] host_name ~~ "'.$substr.'" or service_description ~~ "'.$substr.'" or output ~~ "' . $substr . '"' . $statusfilter;
+        return '[notifications] (host_name ~~ "'.$substr.'" or service_description ~~ "'.$substr.'" or output ~~ "' . $substr . '")' . $statusfilter . $contactfilter;
       }
 
     }

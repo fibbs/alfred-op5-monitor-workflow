@@ -31,6 +31,7 @@ if (is_string( $get_authentication_val = $w->get('get_authentication', $config_p
 } else {
   $get_authentication = false;
 }
+$notification_filter_contact = $w->get('notification_filter_contact', $config_plist);  
 
 require_once('inc_functions.php');
 
